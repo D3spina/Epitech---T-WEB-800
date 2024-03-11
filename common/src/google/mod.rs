@@ -1,48 +1,53 @@
 use anyhow::Context;
 use serde_json::Value;
 
-
+#[derive(PartialEq, Debug)]
 pub struct Google {
-        city: String,
-        lat: f64,
-        lng: f64
+    city: String,
+    lat: f64,
+    lng: f64,
+}
+
+impl Google {
+    // create a new Google object with the city name
+    pub fn new(ville: String) -> Google {
+        Google {
+            city: ville,
+            lat: 0.0,
+            lng: 0.0,
+        }
     }
 
-    impl Google {
-        pub fn new(ville: String) -> Google {
-            Google { city: ville, lat: 0.0, lng: 0.0 }
-        }
+    // get the latitude and longitude of the city
+    pub async fn geocoding(&mut self) -> Result<String, anyhow::Error> {
+        dotenv::dotenv().ok();
 
-        pub async fn geocoding(&mut self, adress: &str) -> Result<String, anyhow::Error> {
-            dotenv::dotenv().ok();
+        let api_key = "AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E";
+        let url = format!(
+            "https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}",
+            self.city, api_key
+        );
 
-            let api_key = std::env::var("GOOGLE_API_KEY").expect("Erreur dans la récupération de la clé API Google");
-            let url = format!(
-                "https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}",
-                adress, api_key
-            );
+        let client = reqwest::Client::new();
+        let response = client
+            .get(&url)
+            .send()
+            .await
+            .context("Erreur dans l'envoie de la requête")?
+            .text()
+            .await
+            .context("Erreur dans la récupération des données")?;
 
-            let client = reqwest::Client::new();
-            let response = client
-                .get(&url)
-                .send()
-                .await
-                .context("Erreur dans l'envoie de la requête")?
-                .text()
-                .await
-                .context("Erreur dans la récupération des données")?;
-
-            let v: Value = serde_json::from_str(&response)?;
-            if let Some(results) = v["results"].as_array() {
-                if !results.is_empty() {
-                    if let Some(geometry) = results[0]["geometry"]["location"].as_object() {
-                        self.lat = geometry.get("lat").unwrap().as_f64().unwrap();
-                        self.lng = geometry.get("lng").unwrap().as_f64().unwrap();
-                    }
+        let v: Value = serde_json::from_str(&response)?;
+        if let Some(results) = v["results"].as_array() {
+            if !results.is_empty() {
+                if let Some(geometry) = results[0]["geometry"]["location"].as_object() {
+                    self.lat = geometry.get("lat").unwrap().as_f64().unwrap();
+                    self.lng = geometry.get("lng").unwrap().as_f64().unwrap();
                 }
             }
-            Ok(format!("{},{}", self.lat, self.lng))
         }
+<<<<<<< Updated upstream:common/src/google/mod.rs
 
         // vérification que l'api répond bien :)
         /*pub async fn check_api() -> Result<(), anyhow::Error> {
@@ -75,7 +80,36 @@ pub struct Google {
                 Err(anyhow::anyhow!("Erreur dans la récupération des données"))
             }
         }*/
+=======
+        Ok(format!("{},{}", self.lat, self.lng))
+>>>>>>> Stashed changes:common/src/google.rs
     }
+
+    // Search for nearby places in the radius of the city. The type of place is given as a parameter. The type of radius is also given as a parameter.
+    // The different type of place can be found here: https://developers.google.com/maps/documentation/places/web-service/supported_types
+    pub async fn nearby_place(
+        &mut self,
+        type_place: &str,
+        radius: &str,
+    ) -> Result<String, anyhow::Error> {
+        dotenv::dotenv().ok();
+        let api_key = "AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E";
+
+        let location = format!("{},{}", self.lat, self.lng);
+        let url = format!("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type={}&key={}",
+                              location, radius, type_place, api_key);
+        let client = reqwest::Client::new();
+        let _response = client
+            .get(url)
+            .send()
+            .await
+            .context("Erreur dans l'envoie de la requête")?
+            .text()
+            .await
+            .context("Erreur dans la récupération des données")?;
+        Ok(_response)
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -83,23 +117,48 @@ mod tests {
     use tokio;
 
     #[tokio::test]
-    async fn test_geocoding_1() {
+    // Test for a specific city
+    async fn test_google_1() {
+        let expected_google = Google {
+            city: "Paris".to_string(),
+            lat: 48.856614,
+            lng: 2.3522219,
+        };
         let mut google = Google::new("Paris".into());
-        let result = google.geocoding("Paris").await;
-        assert_eq!(result.unwrap(), "48.862725,2.287592");
+        let _result = google.geocoding().await;
+        assert_eq!(google, expected_google);
+    }
+    #[tokio::test]
+    // Test for a specific address
+    async fn test_google_2() {
+        let expected_google = Google {
+            city: "80 Rue saint george 54000 Nancy".to_string(),
+            lat: 48.6924497,
+            lng: 6.1881741,
+        };
+        let mut google = Google::new("80 Rue saint george 54000 Nancy".into());
+        let _result = google.geocoding().await;
+        assert_eq!(google, expected_google);
     }
 
     #[tokio::test]
-    async fn test_geocoding_2() {
-        let mut google = Google::new("Paris".into());
-        let result = google.geocoding("80 Rue saint george 54000 Nancy").await;
-        assert_eq!(result.unwrap(), "48.692558,6.1882608");
+    // Test for a non-existing city
+    async fn test_google_3() {
+        let expected_google = Google {
+            city: "zefezgreggeg".to_string(),
+            lat: 0.0,
+            lng: 0.0,
+        };
+        let mut google = Google::new("zefezgreggeg".into());
+        let _result = google.geocoding().await;
+        assert_eq!(google, expected_google);
     }
 
     #[tokio::test]
-    async fn test_geocoding_3() {
+    // Test is restaurant is found in the Paris's 1000m
+    async fn test_nearby_place_1() {
         let mut google = Google::new("Paris".into());
-        let result = google.geocoding("fzfezfezfzf").await;
-        assert_eq!(result.unwrap(),  "Erreur de géolocalisation.");
+        let _result = google.nearby_place("restaurant", "1000").await;
+        assert!(_result.is_ok());
     }
 }
