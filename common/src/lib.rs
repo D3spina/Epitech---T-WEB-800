@@ -31,3 +31,11 @@ pub async fn check_api() -> Result<(), anyhow::Error> {
         Err(anyhow::anyhow!("Erreur dans la récupération des données"))
     }
 }
+
+#[tokio::test]
+async fn test_check_api_success() {
+    match check_api().await {
+        Ok(_) => (),
+        Err(e) => panic!("Test échoué avec l'erreur : {}", e),
+    }
+}

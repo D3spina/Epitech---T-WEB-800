@@ -1,6 +1,5 @@
 use anyhow::Context;
 use serde_json::Value;
-use tokio;
 
 
 pub struct Google {
@@ -14,7 +13,7 @@ pub struct Google {
             Google { city: ville, lat: 0.0, lng: 0.0 }
         }
 
-        pub async fn geocoding(&mut self, adress: &str) {
+        pub async fn geocoding(&mut self, adress: &str) -> Result<String, anyhow::Error> {
             dotenv::dotenv().ok();
 
             let api_key = std::env::var("GOOGLE_API_KEY").expect("Erreur dans la récupération de la clé API Google");
@@ -42,33 +41,33 @@ pub struct Google {
                     }
                 }
             }
+            Ok(format!("{},{}", self.lat, self.lng))
         }
     }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[tokio::test]
-    async fn test_check_api_success() {
-        match check_api().await {
-            Ok(_) => (),
-            Err(e) => error!("Test échoué avec l'erreur : {}", e),
-        }
-    }
+    use tokio;
 
     #[tokio::test]
     async fn test_geocoding_1() {
-        assert_eq!(geocoding("Paris").await, "48.862725,2.287592");
+        let mut google = Google::new("Paris".into());
+        let result = google.geocoding("Paris").await;
+        assert_eq!(result.unwrap(), "48.862725,2.287592");
     }
 
     #[tokio::test]
     async fn test_geocoding_2() {
-        assert_eq!(geocoding("80 Rue Saint Georges 54000 Nancy").await, "48.692558,6.1882608");
+        let mut google = Google::new("Paris".into());
+        let result = google.geocoding("80 Rue saint george 54000 Nancy").await;
+        assert_eq!(result.unwrap(), "48.692558,6.1882608");
     }
 
     #[tokio::test]
     async fn test_geocoding_3() {
-        assert_eq!(geocoding("ftikudtuj").await, "Erreur de géolocalisation.");
+        let mut google = Google::new("Paris".into());
+        let result = google.geocoding("fzfezfezfzf").await;
+        assert_eq!(result.unwrap(),  "Erreur de géolocalisation.");
     }
 }
