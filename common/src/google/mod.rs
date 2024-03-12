@@ -47,7 +47,6 @@ impl Google {
                 }
             }
         }
-<<<<<<< Updated upstream:common/src/google/mod.rs
 
         // vérification que l'api répond bien :)
         /*pub async fn check_api() -> Result<(), anyhow::Error> {
@@ -80,9 +79,7 @@ impl Google {
                 Err(anyhow::anyhow!("Erreur dans la récupération des données"))
             }
         }*/
-=======
         Ok(format!("{},{}", self.lat, self.lng))
->>>>>>> Stashed changes:common/src/google.rs
     }
 
     // Search for nearby places in the radius of the city. The type of place is given as a parameter. The type of radius is also given as a parameter.
