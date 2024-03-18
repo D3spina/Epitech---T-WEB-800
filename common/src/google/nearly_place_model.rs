@@ -68,21 +68,27 @@ struct PlusCode {
 
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct ListPlace {
+pub struct Emplacement {
     name: String,
     rating: f64,
-    addresse: String,
+    address: String,
 }
 
-pub fn exploit_json(value: &Value) -> Result<Vec<ListPlace>, anyhow::Error> {
+impl Emplacement {
+    fn new(name: String, rating: f64, address: String) -> Self{
+        Self {
+            name,
+            rating,
+            address,
+        }
+    }
+}
+
+pub fn exploit_json(value: &Value) -> Result<Vec<Emplacement>, anyhow::Error> {
     let data: TypePlace = serde_json::from_value(value.clone())?;
     let mut place_list = Vec::new();
     for place in data.results {
-        let place = ListPlace {
-            name: place.name,
-            rating: place.rating,
-            addresse: place.vicinity,
-        };
+        let place = Emplacement::new(place.name, place.rating, place.vicinity);
         place_list.push(place);
     }
     Ok(place_list)
