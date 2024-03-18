@@ -122,6 +122,7 @@ mod tests {
             lng: 2.3522219,
         };
         let result = Google::new("Paris".to_string()).await;
+        println!("{:?}", result);
         match result {
             Ok(google) => assert_eq!(google, expected_google),
             Err(e) => panic!("Test échoué avec l'erreur: {:?}", e),
@@ -135,23 +136,21 @@ mod tests {
             lat: 48.6924497,
             lng: 6.1881741,
         };
-        let google_result = Google::new("80 Rue saint george 54000 Nancy".into()).await;
-        let google = google_result.unwrap();
-        assert_eq!(google, expected_google);
+        let result = Google::new("80 Rue saint george 54000 Nancy".to_string()).await;
+        println!("{:?}", result);
+        match result {
+            Ok(google) => assert_eq!(google, expected_google),
+            Err(e) => panic!("Test échoué avec l'erreur: {:?}", e),
+        }
     }
 
     #[tokio::test]
     // Test for a non-existing city
     async fn test_google_3() {
-        let expected_google = Google {
-            city: "zefezgreggeg".to_string(),
-            lat: 0.0,
-            lng: 0.0,
-        };
-        let google = Google::new("zefezgreggeg".into());
-        assert_eq!(google, expected_google);
+        let result = Google::new("efzefzefezfezf".to_string()).await;
+        assert!(result.is_err(), "Pas de correspondance de localisation");
     }
-    /*
+        /*
         #[tokio::test]
         // Test is restaurant is found in the Paris's 1000m
         async fn test_nearby_place_1() {
