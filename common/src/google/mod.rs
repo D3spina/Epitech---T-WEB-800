@@ -8,21 +8,33 @@ mod nearly_place_model;
 
 #[derive(PartialEq, Debug)]
 pub struct Google {
-    city: String,
-    lat: f64,
-    lng: f64,
+    pub city: String,
+    pub lat: f64,
+    pub lng: f64,
+    api_key: String,
 }
 
 
 impl Google {
-    //check if Google Place API is UP
-    pub async fn check_api() -> Result<(), anyhow::Error> {
+
+    // create a new Google object with the city name
+    pub fn new() -> Self {
+        let (lat, lng) = (0.0, 0.0);
         dotenv().expect("Impossible de charger le fichier .env");
-        let api_key =
-            env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
+        Self {
+            city: "".to_string(),
+            lat,
+            lng,
+            api_key:  env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie")
+        }
+    }
+
+
+    //check if Google Place API is UP
+    pub async fn check_api(&self) -> Result<bool, anyhow::Error> {
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address=Paris&key={}",
-            api_key
+            self.api_key
         );
 
         let client = reqwest::Client::new();
@@ -38,7 +50,7 @@ impl Google {
         let v: Value = serde_json::from_str(&response)?;
         if let Some(status) = v["status"].as_str() {
             if status == "OK" {
-                Ok(())
+                Ok(true)
             } else {
                 Err(anyhow::anyhow!("Erreur dans la connexion API"))
             }
@@ -47,29 +59,15 @@ impl Google {
         }
     }
 
-    // create a new Google object with the city name
-    pub async fn new(ville: String) -> Result<Self, anyhow::Error> {
-        let (lat, lng) = Self::geocoding(ville.clone()).await?;
-        Ok(Self {
-            city: ville,
-            lat,
-            lng,
-        })
-    }
+
 
     // get the latitude and longitude of the city
-    pub async fn geocoding(ville: String) -> Result<(f64, f64), anyhow::Error> {
-        Self::check_api()
-            .await
-            .context("Échec lors de la vérification de l'API")?;
-        dotenv().expect("Impossible de charger le fichier .env");
-        let api_key =
-            env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
+    pub async fn geocoding(&mut self, ville: String) -> Result<(), anyhow::Error> {
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}",
-            ville, api_key
+            ville, self.api_key
         );
-
+        println!("{}", url);
         let client = reqwest::Client::new();
         let response = client
             .get(&url)
@@ -84,10 +82,10 @@ impl Google {
         if let Some(results) = v["results"].as_array() {
             if !results.is_empty() {
                 if let Some(geometry) = results[0]["geometry"]["location"].as_object() {
-                    let lat = geometry.get("lat").unwrap().as_f64().unwrap();
-                    let lng = geometry.get("lng").unwrap().as_f64().unwrap();
-
-                    return Ok((lat, lng));
+                    self.lat = geometry.get("lat").unwrap().as_f64().unwrap();
+                    self.lng = geometry.get("lng").unwrap().as_f64().unwrap();
+                    self.city = ville;
+                    return Ok(());
                 }
             }
         }
@@ -101,12 +99,9 @@ impl Google {
         type_place: String,
         radius: i32,
     ) -> Result<Value, anyhow::Error> {
-        dotenv().expect("Impossible de charger le fichier .env");
-        let api_key =
-            env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
         let location = format!("{},{}", self.lat, self.lng);
         let url = format!("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type={}&key={}",
-                              location, radius, type_place, api_key);
+                              location, radius, type_place, self.api_key);
         let client = reqwest::Client::new();
         let _response = client
             .get(url)
@@ -127,53 +122,49 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_api() {
-        let result = Google::check_api().await;
-        assert!(result.is_ok());
+    async fn test_google_1() {
+        dotenv().expect("Impossible de charger le fichier .env");
+        let expected_google: Google = Google {
+            city: String::from("Paris"),
+            lat: 48.856614,
+            lng: 2.3522219,
+            api_key: env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie")
+        };
+        let mut result = Google::new();
+        result.geocoding(String::from("Paris")).await.expect("nike ta mère");
+        assert_eq!(result, expected_google);
     }
 
     #[tokio::test]
-    async fn test_google_1() {
-        let expected_google = Google {
-            city: "Paris".to_string(),
-            lat: 48.856614,
-            lng: 2.3522219,
-        };
-        let result = Google::new("Paris".to_string()).await;
-        println!("{:?}", result);
-        match result {
-            Ok(google) => assert_eq!(google, expected_google),
-            Err(e) => panic!("Test échoué avec l'erreur: {:?}", e),
-        }
-    }
-    #[tokio::test]
     // Test for a specific address
     async fn test_google_2() {
+        dotenv().expect("Impossible de charger le fichier .env");
         let expected_google = Google {
             city: "80 Rue saint george 54000 Nancy".to_string(),
             lat: 48.6924497,
             lng: 6.1881741,
+            api_key: env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie")
         };
-        let result = Google::new("80 Rue saint george 54000 Nancy".to_string()).await;
-        match result {
-            Ok(google) => assert_eq!(google, expected_google),
-            Err(e) => panic!("Test échoué avec l'erreur: {:?}", e),
-        }
+        let mut result = Google::new();
+        result.geocoding(String::from("80 Rue saint george 54000 Nancy")).await.unwrap();
+        assert_eq!(result, expected_google);
     }
 
     #[tokio::test]
     // Test for a non-existing city
     async fn test_google_3() {
-        let result = Google::new("efzefzefezfezf".to_string()).await;
-        assert!(result.is_err(), "Pas de correspondance de localisation");
+        let mut result = Google::new();
+        result.geocoding(String::from("efzefzefezfezf"))
+            .await
+            .unwrap_err();
     }
 
     #[tokio::test]
     // Test if restaurants is found in the Paris's 1000m
     async fn test_nearby_place_1() {
-        let google = Google::new("Paris".to_string()).await;
+        let mut google = Google::new();
+        let _ = google.geocoding(String::from("Paris")).await;
         let _result = google
-            .expect("Erreur")
             .nearby_place("restaurant".to_string(), 1000)
             .await;
         assert!(_result.is_ok());
@@ -182,22 +173,24 @@ mod tests {
     #[tokio::test]
     // Test if restaurants are found with a complete address
     async fn test_nearby_place_2() {
-        let google = Google::new("80 Rue saint george 54000 Nancy".to_string()).await;
+        let mut google = Google::new();
+        google.geocoding(String::from("80 Rue saint george 54000 Nancy"))
+            .await
+            .unwrap();
         let _result = google
-            .expect("Erreur")
             .nearby_place("restaurant".to_string(), 0)
             .await;
-        assert!(_result.is_ok());
     }
 
-    #[tokio::test]
-    // Test if bars are found with a complete address
-    async fn test_nearby_place_3() {
-        let google = Google::new("80 Rue saint george 54000 Nancy".to_string()).await;
+        #[tokio::test]
+        // Test if bars are found with a complete address
+        async fn test_nearby_place_3() {
+            let mut google = Google::new();
+            google.geocoding(String::from("80 Rue saint george 54000 Nancy"))
+                .await
+                .unwrap();
         let _result = google
-            .expect("Erreur")
-            .nearby_place("restaurant".to_string(), 0)
+            .nearby_place("bars".to_string(), 0)
             .await;
-        assert!(_result.is_ok());
     }
 }

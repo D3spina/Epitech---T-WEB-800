@@ -15,9 +15,9 @@ impl WebServer {
         warp::serve(routes).run(([127, 0, 0, 1], self.port)).await;
     }
 
-    fn add_route(&self, path: String, html: String) -> warp::filters::BoxedFilter<(warp::http::Response<warp::hyper::Body>,)> {
+    /*fn add_route(&self, path: String, html: String) -> warp::filters::BoxedFilter<(warp::http::Response<warp::hyper::Body>,)> {
         warp::path(&path)
             .map(|| warp::reply::html(&html))
             .boxed()
-    }
+    }*/
 }
