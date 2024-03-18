@@ -1,5 +1,7 @@
 use anyhow::Context;
 use serde_json::Value;
+use dotenv::dotenv;
+use std::env;
 
 #[derive(PartialEq, Debug)]
 pub struct Google {
@@ -12,7 +14,8 @@ impl Google {
 
     //check if Google Place API is UP
     pub async fn check_api() -> Result<(), anyhow::Error> {
-        let api_key = "AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E";
+        dotenv().expect("Impossible de charger le fichier .env");
+        let api_key = env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address=Paris&key={}",
             api_key
@@ -54,8 +57,8 @@ impl Google {
     // get the latitude and longitude of the city
     pub async fn geocoding(ville: String) -> Result<(f64, f64), anyhow::Error> {
         Self::check_api().await.context("Échec lors de la vérification de l'API")?;
-
-        let api_key = "AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E";
+        dotenv().expect("Impossible de charger le fichier .env");
+        let api_key = env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}",
             ville, api_key
@@ -93,8 +96,8 @@ impl Google {
         type_place: String,
         radius: i32,
     ) -> Result<String, anyhow::Error> {
-        let api_key = "AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E";
-
+        dotenv().expect("Impossible de charger le fichier .env");
+        let api_key = env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
         let location = format!("{},{}", self.lat, self.lng);
         let url = format!("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type={}&key={}",
                               location, radius, type_place, api_key);
