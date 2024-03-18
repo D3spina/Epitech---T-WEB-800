@@ -1,7 +1,10 @@
-use anyhow::Context;
-use serde_json::Value;
-use dotenv::dotenv;
 use std::env;
+
+use anyhow::{Context, Result};
+use dotenv::dotenv;
+use serde_json::Value;
+
+mod nearly_place_model;
 
 #[derive(PartialEq, Debug)]
 pub struct Google {
@@ -10,12 +13,13 @@ pub struct Google {
     lng: f64,
 }
 
-impl Google {
 
+impl Google {
     //check if Google Place API is UP
     pub async fn check_api() -> Result<(), anyhow::Error> {
         dotenv().expect("Impossible de charger le fichier .env");
-        let api_key = env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
+        let api_key =
+            env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address=Paris&key={}",
             api_key
@@ -43,7 +47,6 @@ impl Google {
         }
     }
 
-
     // create a new Google object with the city name
     pub async fn new(ville: String) -> Result<Self, anyhow::Error> {
         let (lat, lng) = Self::geocoding(ville.clone()).await?;
@@ -56,9 +59,12 @@ impl Google {
 
     // get the latitude and longitude of the city
     pub async fn geocoding(ville: String) -> Result<(f64, f64), anyhow::Error> {
-        Self::check_api().await.context("Échec lors de la vérification de l'API")?;
+        Self::check_api()
+            .await
+            .context("Échec lors de la vérification de l'API")?;
         dotenv().expect("Impossible de charger le fichier .env");
-        let api_key = env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
+        let api_key =
+            env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}",
             ville, api_key
@@ -86,7 +92,6 @@ impl Google {
             }
         }
         Err(anyhow::Error::msg("Pas de résultat trouvé"))
-
     }
 
     // Search for nearby places in the radius of the city. The type of place is given as a parameter. The type of radius is also given as a parameter.
@@ -95,9 +100,10 @@ impl Google {
         &self,
         type_place: String,
         radius: i32,
-    ) -> Result<String, anyhow::Error> {
+    ) -> Result<Value, anyhow::Error> {
         dotenv().expect("Impossible de charger le fichier .env");
-        let api_key = env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
+        let api_key =
+            env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie");
         let location = format!("{},{}", self.lat, self.lng);
         let url = format!("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type={}&key={}",
                               location, radius, type_place, api_key);
@@ -107,17 +113,18 @@ impl Google {
             .send()
             .await
             .context("Erreur dans l'envoie de la requête")?
-            .text()
+            .json::<Value>()
             .await
             .context("Erreur dans la récupération des données")?;
-            return Ok(_response);
+        return Ok(_response);
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use tokio;
+
+    use super::*;
 
     #[tokio::test]
     async fn test_api() {
@@ -165,7 +172,10 @@ mod tests {
     // Test if restaurants is found in the Paris's 1000m
     async fn test_nearby_place_1() {
         let google = Google::new("Paris".to_string()).await;
-        let _result = google.expect("Erreur").nearby_place("restaurant".to_string(), 1000).await;
+        let _result = google
+            .expect("Erreur")
+            .nearby_place("restaurant".to_string(), 1000)
+            .await;
         assert!(_result.is_ok());
     }
 
@@ -173,7 +183,10 @@ mod tests {
     // Test if restaurants are found with a complete address
     async fn test_nearby_place_2() {
         let google = Google::new("80 Rue saint george 54000 Nancy".to_string()).await;
-        let _result = google.expect("Erreur").nearby_place("restaurant".to_string(), 0).await;
+        let _result = google
+            .expect("Erreur")
+            .nearby_place("restaurant".to_string(), 0)
+            .await;
         assert!(_result.is_ok());
     }
 
@@ -181,7 +194,10 @@ mod tests {
     // Test if bars are found with a complete address
     async fn test_nearby_place_3() {
         let google = Google::new("80 Rue saint george 54000 Nancy".to_string()).await;
-        let _result = google.expect("Erreur").nearby_place("restaurant".to_string(), 0).await;
+        let _result = google
+            .expect("Erreur")
+            .nearby_place("restaurant".to_string(), 0)
+            .await;
         assert!(_result.is_ok());
     }
 }

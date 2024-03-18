@@ -18,4 +18,4 @@ Cargo.lock
 .DS_STORE
 
 #.env file to keep secret
-.env
+./.env
