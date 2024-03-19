@@ -3,7 +3,7 @@ use dotenv::dotenv;
 use serde_json::Value;
 use std::env;
 
-mod nearly_place_model;
+pub mod nearly_place_model;
 
 #[derive(PartialEq, Debug)]
 pub struct Google {
