@@ -3,6 +3,7 @@ use dotenv::dotenv;
 use serde_json::Value;
 use std::env;
 
+// Importation des modules
 mod nearly_place_model;
 
 #[derive(PartialEq, Debug)]
@@ -14,7 +15,8 @@ pub struct Google {
 }
 
 impl Google {
-    // create a new Google object with the city name
+    // create a new Google object avec la clé API en attribut privé de base.
+    // Initialisation
     pub fn new() -> Self {
         let (lat, lng) = (0.0, 0.0);
         dotenv().expect("Impossible de charger le fichier .env");
@@ -27,7 +29,9 @@ impl Google {
         }
     }
 
-    //check if Google Place API is UP
+    // Check if Google Place API is UP
+    // Return true if the API is UP, False sinon
+    // Cette fonction est incluse dans les autres fonctions pour vérifier que l'API est UP avant de faire des requêtes
     pub async fn check_api(&self) -> Result<bool, anyhow::Error> {
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address=Paris&key={}",
@@ -57,7 +61,10 @@ impl Google {
     }
 
     // get the latitude and longitude of the city
+    // Nous récupérons du front la localisation de la ville ou l'addresse, nous modifions l'objet google avec les attributs.
     pub async fn geocoding(&mut self, ville: String) -> Result<(), anyhow::Error> {
+        // Check if the API is up before proceeding
+        self.check_api().await?;
         let url = format!(
             "https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}",
             ville, self.api_key
@@ -92,6 +99,8 @@ impl Google {
         type_place: String,
         radius: i32,
     ) -> Result<Value, anyhow::Error> {
+        // Check if the API is up before proceeding
+        self.check_api().await?;
         let location = format!("{},{}", self.lat, self.lng);
         let url = format!("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type={}&key={}",
                               location, radius, type_place, self.api_key);
@@ -108,6 +117,7 @@ impl Google {
     }
 }
 
+// Tests unitaires
 #[cfg(test)]
 mod tests {
     use tokio;
@@ -115,6 +125,7 @@ mod tests {
     use super::*;
 
     #[tokio::test]
+    // Test pour une ville spécifique
     async fn test_google_1() {
         dotenv().expect("Impossible de charger le fichier .env");
         let expected_google: Google = Google {
@@ -133,7 +144,7 @@ mod tests {
     }
 
     #[tokio::test]
-    // Test for a specific address
+    // Test pour une addresse spécifique
     async fn test_google_2() {
         dotenv().expect("Impossible de charger le fichier .env");
         let expected_google = Google {
@@ -152,7 +163,7 @@ mod tests {
     }
 
     #[tokio::test]
-    // Test for a non-existing city
+    // Test si l'entrée est innexistante
     async fn test_google_3() {
         let mut result = Google::new();
         result
@@ -183,6 +194,7 @@ mod tests {
 
     #[tokio::test]
     // Test if bars are found with a complete address
+    // Second test pour tester l'intégration de type_place
     async fn test_nearby_place_3() {
         let mut google = Google::new();
         google
