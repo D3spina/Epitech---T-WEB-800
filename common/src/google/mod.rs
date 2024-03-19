@@ -78,7 +78,6 @@ impl Google {
                     self.lat = geometry.get("lat").unwrap().as_f64().unwrap();
                     self.lng = geometry.get("lng").unwrap().as_f64().unwrap();
                     self.city = ville;
-                    println!("{:?}", self.city);
                     return Ok(());
                 }
             }
