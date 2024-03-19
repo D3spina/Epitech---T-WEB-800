@@ -1,6 +1,5 @@
 use serde_json::Value;
 
-
 #[macro_use] extern crate rocket;
 extern crate common;
 use common::google::Google;
