@@ -4,7 +4,7 @@ use serde_json::Value;
 use std::env;
 
 // Importation des modules
-mod nearly_place_model;
+pub mod nearly_place_model;
 
 #[derive(PartialEq, Debug)]
 pub struct Google {
