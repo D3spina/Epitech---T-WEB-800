@@ -16,6 +16,3 @@ Cargo.lock
 
 #MacOS Files
 .DS_STORE
-
-#.env file to keep secret
-./.env

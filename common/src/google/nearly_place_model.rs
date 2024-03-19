@@ -1,4 +1,3 @@
-use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::env;
@@ -93,7 +92,6 @@ impl Emplacement {
 // On récupère le nom, la note, l'adresse et la photo de l'endroit qu'on regroupe dans un vecteur de "Emplacement"
 pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
     let data: TypePlace = serde_json::from_value(value.clone())?;
-    dotenv().expect("Impossible de charger le fichier .env");
     let mut place_list = Vec::new();
     for place in data.results {
         // TODO : La clé API se retrouve dans l'URL. Voir pour sécuriser celà.
