@@ -7,7 +7,7 @@ use common::google::nearly_place_model::exploit_json;
 use common::google::Google;
 
 // URL pour récupérer les restaurant dans un périmétre donné et pour une localisation donnée
-#[get("/service/<localisation>/<radius>")]
+#[get("/service/eat/<localisation>/<radius>")]
 async fn index(localisation: String, radius: i32) -> String {
     let restaurant = get_google(localisation, radius).await;
     let result = exploit_json(restaurant).unwrap();
