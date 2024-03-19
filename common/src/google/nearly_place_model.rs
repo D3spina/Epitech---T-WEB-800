@@ -91,7 +91,7 @@ impl Emplacement {
 
 // Cette fonction sert à récupérer depuis le JSON de l'API Google Place les informations qui nous intéressent
 // On récupère le nom, la note, l'adresse et la photo de l'endroit qu'on regroupe dans un vecteur de "Emplacement"
-pub fn exploit_json(value: &Value) -> Result<Vec<Emplacement>, anyhow::Error> {
+pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
     let data: TypePlace = serde_json::from_value(value.clone())?;
     dotenv().expect("Impossible de charger le fichier .env");
     let mut place_list = Vec::new();
