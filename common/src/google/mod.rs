@@ -1,10 +1,9 @@
 use anyhow::{Context, Result};
-use dotenv::dotenv;
 use serde_json::Value;
 use std::env;
 
 // Importation des modules
-mod nearly_place_model;
+pub mod nearly_place_model;
 
 #[derive(PartialEq, Debug)]
 pub struct Google {
@@ -19,7 +18,6 @@ impl Google {
     // Initialisation
     pub fn new() -> Self {
         let (lat, lng) = (0.0, 0.0);
-        dotenv().expect("Impossible de charger le fichier .env");
         Self {
             city: "".to_string(),
             lat,
@@ -127,7 +125,6 @@ mod tests {
     #[tokio::test]
     // Test pour une ville spécifique
     async fn test_google_1() {
-        dotenv().expect("Impossible de charger le fichier .env");
         let expected_google: Google = Google {
             city: String::from("Paris"),
             lat: 48.856614,
@@ -146,7 +143,6 @@ mod tests {
     #[tokio::test]
     // Test pour une addresse spécifique
     async fn test_google_2() {
-        dotenv().expect("Impossible de charger le fichier .env");
         let expected_google = Google {
             city: "80 Rue saint george 54000 Nancy".to_string(),
             lat: 48.6924497,
