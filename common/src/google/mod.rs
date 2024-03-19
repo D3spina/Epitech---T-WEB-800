@@ -95,6 +95,7 @@ impl Google {
         let location = format!("{},{}", self.lat, self.lng);
         let url = format!("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type={}&key={}",
                               location, radius, type_place, self.api_key);
+        println!("{}", url);
         let client = reqwest::Client::new();
         let _response = client
             .get(url)

@@ -83,7 +83,7 @@ impl Emplacement {
     }
 }
 
-pub fn exploit_json(value: &Value) -> Result<Vec<Emplacement>, anyhow::Error> {
+pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
     let data: TypePlace = serde_json::from_value(value.clone())?;
     let mut place_list = Vec::new();
     for place in data.results {

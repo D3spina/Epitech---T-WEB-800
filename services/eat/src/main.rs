@@ -3,13 +3,15 @@ use serde_json::Value;
 #[macro_use] extern crate rocket;
 extern crate common;
 use common::google::Google;
+use common::google::nearly_place_model::exploit_json;
 
 
 // url static
 #[get("/")]
 async fn index() -> String {
     let resto = get_google().await;
-    format!("{:?}", resto)
+    let result = exploit_json(resto).unwrap();
+    format!("{:?}", result)
 }
 
 
