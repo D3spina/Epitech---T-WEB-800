@@ -11,14 +11,21 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+    - name: Change to service directory
+      run: cd services/eat/src
     - name: Normes
-      run: cargo fmt
+      run: |
+        cd services/eat/src
+        cargo fmt
     - name: Run tests
-      run: cargo test --verbose
+      run: |
+        cd services/eat/src
+        cargo test --verbose
     - name: Build
-      run: cargo build --verbose
+      run: |
+        cd services/eat/src
+        cargo build --verbose
