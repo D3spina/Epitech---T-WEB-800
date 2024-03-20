@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Change to service directory
-      run: cd services/eat/src
     - name: Normes
       run: cargo fmt
     - name: Run tests
