@@ -2,9 +2,10 @@ name: Rust
 
 on:
   push:
-    branches: [ "service-eat" ]
-  pull_request:
-    branches: [ "service-eat" ]
+    branches: 
+     - service-eat
+     - service-drink
+     - main
 
 env:
   CARGO_TERM_COLOR: always
