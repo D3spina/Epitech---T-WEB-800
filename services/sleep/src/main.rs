@@ -6,11 +6,11 @@ extern crate common;
 use common::google::nearly_place_model::exploit_json;
 use common::google::Google;
 
-// URL pour récupérer les restaurant dans un périmétre donné et pour une localisation donnée
+// URL pour récupérer les sleep dans un périmétre donné et pour une localisation donnée
 #[get("/service/sleep/<localisation>/<radius>")]
 async fn index(localisation: String, radius: i32) -> String {
-    let restaurant = get_google(localisation, radius).await;
-    let result = exploit_json(restaurant).unwrap();
+    let sleep = get_google(localisation, radius).await;
+    let result = exploit_json(sleep).unwrap();
     format!("{:?}", result)
 }
 
