@@ -1,35 +1,61 @@
+use gdk4::Display;
 use gtk::prelude::*;
-use gtk::{Button, Window, WindowType};
+use gtk::{glib, Application, ApplicationWindow, Button, CssProvider};
+mod gui;
 
-fn main() {
-    // Initialize GTK application
-    gtk::init().expect("Failed to initialize GTK.");
+const APP_ID: &str = "org.gtk_rs.Css1";
 
-    // Create a new window
-    let window = Window::new(WindowType::Toplevel);
-    window.set_title("GTK Rust Example");
-    window.set_default_size(350, 70);
+fn main() -> glib::ExitCode {
+    // Create a new application
+    let app = Application::builder().application_id(APP_ID).build();
 
-    // Create a button
-    let button = Button::with_label("Click me!");
+    // Connect to signals
+    app.connect_startup(|_| load_css());
+    app.connect_activate(build_ui);
 
-    // Add button to the window
-    window.add(&button);
+    // Run the application
+    app.run()
+}
 
-    // Connect the button clicked event
-    button.connect_clicked(|_| {
-        println!("Button clicked!");
-    });
+fn load_css() {
+    // Load the CSS file and add it to the provider
+    let provider = CssProvider::new();
+    provider.load_from_string(include_str!("./gui/style.css"));
 
-    // Connect the window closed event
-    window.connect_delete_event(|_, _| {
-        gtk::main_quit();
-        Inhibit(false)
-    });
+    // Add the provider to the default screen
+    gtk::style_context_add_provider_for_display(
+        &Display::default().expect("Could not connect to a display."),
+        &provider,
+        gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+    );
+}
 
-    // Show all widgets
-    window.show_all();
+fn build_ui(app: &Application) {
+    // Create button
+    let button_custom = gtk::Button::new();
+    //.margin_top(12)
+    //.margin_bottom(120)
+    //.margin_start(12)
+    //.margin_end(12)
+    //.build();
 
-    // Run the GTK main event loop
-    gtk::main();
+    //button_custom.set_size_request(20, 30);
+    //button_custom.add_css_class("button_custom");
+    //button_custom.can_shrink();
+
+    let boxContainer = gtk::Box::new(gtk::Orientation::Vertical, 20);
+    boxContainer.set_size_request(500, 100);
+    boxContainer.add_css_class("box_container");
+
+    // boxContainer.append(&button_custom);
+
+    // Create a new window and present it
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("My GTK App")
+        .child(&button_custom)
+        .default_width(800)
+        .default_height(800)
+        .build();
+    window.present();
 }
