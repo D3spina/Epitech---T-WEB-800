@@ -1,0 +1,23 @@
+name: Rust-sleep
+
+on:
+  push:
+    branches: 
+     - service-sleep
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run tests
+      run: |
+        cd services/sleep/src
+        cargo test --verbose
+    - name: Build
+      run: |
+        cd services/sleep/src
+        cargo build --verbose
