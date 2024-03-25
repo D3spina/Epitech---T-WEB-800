@@ -7,6 +7,7 @@ extern crate common;
 use common::google::nearly_place_model::exploit_json;
 use common::google::Google;
 
+<<<<<<< HEAD
 
 #[get("/service/drink/<localisation>/<radius>")]
 async fn index(localisation: String, radius: i32) -> String {
@@ -22,6 +23,13 @@ async fn index(localisation: String, radius: i32) -> String {
 
     let result = serde_json::to_value(&res).unwrap();
 
+=======
+// URL pour récupérer les sleep dans un périmétre donné et pour une localisation donnée
+#[get("/service/sleep/<localisation>/<radius>")]
+async fn index(localisation: String, radius: i32) -> String {
+    let sleep = get_google(localisation, radius).await;
+    let result = exploit_json(sleep).unwrap();
+>>>>>>> a5c390ab384dd4d1ab3bfb1079ff702979a1c6fd
     format!("{:?}", result)
 }
 
