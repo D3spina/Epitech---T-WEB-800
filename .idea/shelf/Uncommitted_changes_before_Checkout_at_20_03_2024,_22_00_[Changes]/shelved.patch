@@ -1,0 +1,7 @@
+Index: services/eat/tests/integration.rs
+===================================================================
+diff --git a/services/eat/tests/integration.rs b/services/eat/tests/integration.rs
+--- a/services/eat/tests/integration.rs	
++++ b/services/eat/tests/integration.rs	
+@@ -1,0 +1,1 @@
++

@@ -1,0 +1,10 @@
+Index: common/tests/integration.rs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/common/tests/integration.rs b/common/tests/integration.rs
+--- a/common/tests/integration.rs	
++++ b/common/tests/integration.rs	
+@@ -1,0 +1,1 @@
++
