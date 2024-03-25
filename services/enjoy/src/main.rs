@@ -14,7 +14,6 @@ async fn index(localisation: String, radius: i32) -> String {
     //crer un vecteur vide
     let mut res = HashMap::new();
 
-
     for &element in types.iter() {
         let google = get_google(localisation.clone(), radius, String::from(element)).await;
         let google_result = exploit_json(google).unwrap();
