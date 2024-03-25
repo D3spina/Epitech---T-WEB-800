@@ -28,6 +28,6 @@ pub(crate) async fn get_google(localisation: String, radius: i32) -> Value {
     let resto: Value = google
         .nearby_place(String::from("restaurant"), radius)
         .await
-        .expect("FDP");
+        .expect("Erreur dans la récupération des données de la fonction get_google");
     resto
 }

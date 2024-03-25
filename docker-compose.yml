@@ -7,6 +7,3 @@ services:
                 image: eat
                 ports:
                         - "8000:8000"
-                environment:
-                        ROCKET_ADDRESS: "0.0.0.0"
-                        GOOGLE_API_KEY: "AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E"
