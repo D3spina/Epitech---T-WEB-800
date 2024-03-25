@@ -6,7 +6,7 @@ extern crate rocket;
 extern crate common;
 use common::google::nearly_place_model::exploit_json;
 use common::google::Google;
-mod lib;
+mod r#mod;
 
 
 #[get("/service/travel/<localisation1>/<localisation2>/")]

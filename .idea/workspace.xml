@@ -74,6 +74,8 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/services/travel/src" />
+      <recent name="$PROJECT_DIR$/services/travel/src/structure" />
       <recent name="$PROJECT_DIR$/common/src" />
     </key>
   </component>
@@ -211,7 +213,7 @@
       <workItem from="1710968406358" duration="1280000" />
       <workItem from="1710970232782" duration="737000" />
       <workItem from="1711355222124" duration="6650000" />
-      <workItem from="1711369730945" duration="9159000" />
+      <workItem from="1711369730945" duration="9980000" />
     </task>
     <task id="LOCAL-00001" summary="back with .env">
       <option name="closed" value="true" />
