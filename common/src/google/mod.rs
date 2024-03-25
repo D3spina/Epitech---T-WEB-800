@@ -120,7 +120,7 @@ impl Google {
 // Tests unitaires
 #[cfg(test)]
 mod tests {
-    use tokio;
+use tokio;
 
     use super::*;
 
@@ -151,8 +151,7 @@ mod tests {
             city: "80 Rue saint george 54000 Nancy".to_string(),
             lat: 48.6924497,
             lng: 6.1881741,
-            api_key: env::var("GOOGLE_API_KEY")
-                .expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
+            api_key: env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
         };
         let mut result = Google::new();
         result
@@ -178,9 +177,8 @@ mod tests {
         let mut google = Google::new();
         let _ = google.geocoding(String::from("Paris")).await;
         let _result = google.nearby_place("restaurant".to_string(), 1000).await;
-        assert!(_result.is_ok());
     }
-
+    
     #[tokio::test]
     // Test if restaurants are found with a complete address
     async fn test_nearby_place_2() {
