@@ -1,6 +1,5 @@
-use std::env;
 use mysql::*;
-use std::error::Error;
+//use dotenv::dotenv;
 use mysql::prelude::Queryable;
 
 pub struct Database {
@@ -8,29 +7,29 @@ pub struct Database {
 }
 
 impl Database {
-    pub fn connect() -> Result<Database, Box<dyn Error>> {
-        let mut opts = OptsBuilder::new();
-        let username = env::var("USERNAME").expect("La USERNAME variable n'a pas été définie");
-        let password = env::var("PASSWORD").expect("La PASSWORD variable n'a pas été définie");
-        let hostname = env::var("HOSTNAME").expect("La HOSTNAME variable n'a pas été définie");
-        let port = env::var("PORT").expect("La PORT variable n'a pas été définie");
-        let db_name = env::var("DB_NAME").expect("La DB_NAME variable n'a pas été définie");
 
-        opts.user(username)
-            .pass(password)
-            .ip_or_hostname(hostname)
-            .port(port)
-            .db_name(db_name);
+    fn new() -> Self {
 
-        let pool = Pool::new(opts)?;
+        //database
+        let url = "mysql://root@localhost:3307/rust";
 
-        Ok(Database { pool })
+        //create connection
+        let pool = Pool::new(url).unwrap();
+
+
+        Self {
+            pool
+        }
+
+
+        //pool.get_conn().unwrap()
     }
 
-    pub fn query_example(&mut self) -> Result<(), Box<dyn Error>> {
-        let mut conn = self.pool.get_conn()?;
-        let query = "SELECT * FROM example_table";
-        let result = conn.query_map(query, |(column1, column2): (i32, String)| {
+    pub fn query(query: &str) -> Result<(), anyhow::Error> {
+        let db = Database::new();
+        let conn = db.pool.get_conn();
+        let query = query;
+        let result = conn?.query_map(query, |(column1, column2): (i32, String)| {
             (column1, column2)
         })?;
 
