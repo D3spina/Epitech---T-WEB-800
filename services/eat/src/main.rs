@@ -1,17 +1,17 @@
 use serde_json::Value;
+use rocket::serde::json::Json;
 
 #[macro_use]
 extern crate rocket;
 extern crate common;
-use common::google::nearly_place_model::exploit_json;
+use common::google::nearly_place_model::{exploit_json, Emplacement};
 use common::google::Google;
-
 // URL pour récupérer les restaurant dans un périmétre donné et pour une localisation donnée
 #[get("/service/eat/<localisation>/<radius>")]
-async fn index(localisation: String, radius: i32) -> String {
+async fn index(localisation: String, radius: i32) -> Json<Vec<Emplacement>> {
     let restaurant = get_google(localisation, radius).await;
     let result = exploit_json(restaurant).unwrap();
-    format!("{:?}", result)
+    Json(result)
 }
 
 #[launch]

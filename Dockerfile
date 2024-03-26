@@ -1,16 +1,15 @@
 # Stage de construction
 FROM rust:latest as builder
-WORKDIR /usr/src/eat
 
 # Copiez tous les membres du workspace ainsi que le fichier de workspace.
-COPY ./Cargo.toml ./
+# Pre-building de eat pour le caching des dépendances
+WORKDIR /usr/src/eat
+COPY ./Cargo.toml ./Cargo.toml
 COPY ./common ./common
 COPY ./services ./services
+COPY .env .env
 
-# Pre-building de eat pour le caching des dépendances
-WORKDIR /usr/src/eat/services/eat
-COPY ./common/src ./../../common/src
-COPY ./services/eat/src ./src
+# Création du build release
 RUN cargo build --release
 
 # Stage d'exécution
@@ -19,6 +18,6 @@ RUN apt-get update && apt-get install -y openssl && apt-get install -y ca-certif
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/src/eat/target/release/eat /usr/local/bin/eat
-EXPOSE 8000
+EXPOSE 8002
 
 CMD ["eat"]

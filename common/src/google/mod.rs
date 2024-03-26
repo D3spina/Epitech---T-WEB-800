@@ -1,7 +1,6 @@
 use anyhow::{Context, Result};
+use dotenv_codegen::dotenv;
 use serde_json::Value;
-use std::env;
-use dotenv::dotenv;
 
 // Importation des modules
 pub mod nearly_place_model;
@@ -18,14 +17,13 @@ impl Google {
     // create a new Google object avec la clé API en attribut privé de base.
     // Initialisation
     pub fn new() -> Self {
-        dotenv().expect("Impossible de charger le fichier .env");
         let (lat, lng) = (0.0, 0.0);
         Self {
             city: "".to_string(),
             lat,
             lng,
-            api_key: env::var("GOOGLE_API_KEY")
-                .expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
+            api_key: dotenv!("GOOGLE_API_KEY")
+                .to_string(),
         }
     }
 
@@ -127,32 +125,30 @@ mod tests {
     #[tokio::test]
     // Test pour une ville spécifique
     async fn test_google_1() {
-        dotenv().expect("Impossible de charger le fichier .env");
         let expected_google: Google = Google {
             city: String::from("Paris"),
             lat: 48.856614,
             lng: 2.3522219,
-            api_key: env::var("GOOGLE_API_KEY")
-                .expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
+            api_key: dotenv!("GOOGLE_API_KEY")
+                .to_string(),
         };
         let mut result = Google::new();
         result
             .geocoding(String::from("Paris"))
             .await
-            .expect("nike ta mère");
+            .expect("erreur dans la récupération des données");
         assert_eq!(result, expected_google);
     }
 
     #[tokio::test]
     // Test pour une addresse spécifique
     async fn test_google_2() {
-        dotenv().expect("Impossible de charger le fichier .env");
         let expected_google = Google {
             city: "80 Rue saint george 54000 Nancy".to_string(),
             lat: 48.6924497,
             lng: 6.1881741,
-            api_key: env::var("GOOGLE_API_KEY")
-                .expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
+            api_key: dotenv!("GOOGLE_API_KEY")
+                .to_string(),
         };
         let mut result = Google::new();
         result
