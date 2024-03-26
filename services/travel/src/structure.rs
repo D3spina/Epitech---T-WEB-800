@@ -1,5 +1,7 @@
+use std::env;
+use anyhow::Context;
 use serde::{Serialize, Deserialize};
-use serde_json::Value;
+use serde_json::{from_value, Value, Error};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Root {
@@ -73,50 +75,63 @@ pub struct Polyline {
     pub points: Option<String>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 pub struct RouteInformations {
     pub travel_mode: String,
     pub distance: String,
     pub duration: String,
     pub start_address: String,
     pub end_address: String,
-    pub steps: Vec<Step>,
 }
 
 impl RouteInformations {
-    pub fn new(travel_mode: String, distance: String, duration: String, start_address: String, end_address: String, steps: Vec<Step>) -> Self {
+    pub fn new(travel_mode: String, distance: String, duration: String, start_address: String, end_address: String) -> Self {
         Self {
             travel_mode,
             distance,
             duration,
             start_address,
             end_address,
-            steps,
         }
     }
 }
 
-pub fn exploit_routes(value: Value, mode: String) -> RouteInformations {
-    let data: Root = serde_json::from_value(value.clone())?;
+pub fn exploit_routes(value: Value, mode: String) -> Result<RouteInformations, Error> {
+    let data: Root = from_value(value.clone())?;
     let first_route = data.routes.unwrap_or_else(|| vec![]).into_iter().next().expect("No routes found");
 
     let legs = first_route.legs.unwrap_or_else(|| vec![]).into_iter().next().expect("No legs found");
 
-    let travel_mode = legs.steps.as_ref().unwrap_or(&vec![]).first().map_or("".to_string(), |step| step.travel_mode.clone().unwrap_or_default());
-    let distance = legs.distance.as_ref().map_or("".to_string(), |distance| distance.text.clone().unwrap_or_default());
-    let duration = legs.duration.as_ref().map_or("".to_string(), |duration| duration.text.clone().unwrap_or_default());
+    let distance = legs.distance.as_ref().map_or_else(|| "".to_string(), |distance| distance.text.clone().unwrap_or_default());
+    let duration = legs.duration.as_ref().map_or_else(|| "".to_string(), |duration| duration.text.clone().unwrap_or_default());
     let start_address = legs.start_address.clone().unwrap_or_default();
     let end_address = legs.end_address.clone().unwrap_or_default();
-    let steps = legs.steps.clone().unwrap_or_default();
 
-    let travel = RouteInformations::new {
-        travel_mode,
-        distance,
-        duration,
-        start_address,
-        end_address,
-        steps,
-    };
-
-    travel
+    Ok(RouteInformations::new(mode, distance, duration, start_address, end_address))
 }
+
+pub async fn get_google_routes(depart: &str, arrivee: &str, modes: &[&str]) -> Result<Vec<RouteInformations>, anyhow::Error> {
+    dotenv::dotenv().expect("Erreur de chargement du fichier .env");
+    let route_api_key = env::var("ROUTE_API_KEY").expect("ROUTE_API_KEY doit être défini");
+    let mut routes: Vec<RouteInformations> = Vec::new();
+
+    for mode in modes {
+        let url = format!("https://maps.googleapis.com/maps/api/directions/json?origin={}&destination={}&mode={}&key={}", depart, arrivee, mode, route_api_key);
+
+        let client = reqwest::Client::new();
+        let _response = client
+            .get(url)
+            .send()
+            .await
+            .context("Erreur dans l'envoie de la requête")?
+            .json::<Value>()
+            .await
+            .context("Erreur dans la récupération des données")?;
+        let travel = exploit_routes(_response, mode.to_string());
+        routes.push(travel.unwrap())
+    }
+
+    Ok(routes)
+}
+
 

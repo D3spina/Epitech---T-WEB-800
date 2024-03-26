@@ -8,7 +8,17 @@
     <cargoProject FILE="$PROJECT_DIR$/services/travel/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0ce9a27-b413-4c05-9404-c92af16077bb" name="Changes" comment="back with .env" />
+    <list default="true" id="f0ce9a27-b413-4c05-9404-c92af16077bb" name="Changes" comment="back with .env">
+      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2024,_13_38_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2024__13_38__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/src/structure.rs" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/src/structure.rs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,31 +53,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Cargo.Test google::tests.executor": "Run",
-    "Cargo.Test google::tests::test_nearby_place_2.executor": "Run",
-    "Cargo.Test google::tests::test_nearby_place_3.executor": "Run",
-    "Cargo.Test integration [common].executor": "Run",
-    "Docker.Dockerfile.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.rust.reset.selective.auto.import": "true",
-    "git-widget-placeholder": "service-travel",
-    "last_opened_file_path": "/Users/d3spina/Documents/Documents - MacBook Air de Guillaume/Dev/Epitech/t-web-800/common/src/google",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
-    "org.rust.first.attach.projects.stats": "true",
-    "org.rust.hideNoCargoProjectNotifications/Users/d3spina/Documents/Documents - MacBook Air de Guillaume/Dev/Epitech/t-web-800/Cargo.toml": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Cargo.Test google::tests.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test google::tests::test_nearby_place_2.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test google::tests::test_nearby_place_3.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test integration [common].executor&quot;: &quot;Run&quot;,
+    &quot;Docker.Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;service-travel&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/d3spina/Documents/Documents - MacBook Air de Guillaume/Dev/Epitech/t-web-800/common/src/google&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
+    &quot;org.rust.first.attach.projects.stats&quot;: &quot;true&quot;,
+    &quot;org.rust.hideNoCargoProjectNotifications/Users/d3spina/Documents/Documents - MacBook Air de Guillaume/Dev/Epitech/t-web-800/Cargo.toml&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/common/src/google" />
@@ -213,7 +223,9 @@
       <workItem from="1710968406358" duration="1280000" />
       <workItem from="1710970232782" duration="737000" />
       <workItem from="1711355222124" duration="6650000" />
-      <workItem from="1711369730945" duration="9980000" />
+      <workItem from="1711369730945" duration="10318000" />
+      <workItem from="1711456857212" duration="955000" />
+      <workItem from="1711457820071" duration="2403000" />
     </task>
     <task id="LOCAL-00001" summary="back with .env">
       <option name="closed" value="true" />
