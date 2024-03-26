@@ -9,15 +9,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0ce9a27-b413-4c05-9404-c92af16077bb" name="Changes" comment="back with .env">
-      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2024,_13_38_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_19_03_2024__13_38__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/travel/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/travel/src/lib.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/travel/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/travel/src/structure.rs" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/src/structure.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +218,7 @@
       <workItem from="1711355222124" duration="6650000" />
       <workItem from="1711369730945" duration="10318000" />
       <workItem from="1711456857212" duration="955000" />
-      <workItem from="1711457820071" duration="2403000" />
+      <workItem from="1711457820071" duration="2483000" />
     </task>
     <task id="LOCAL-00001" summary="back with .env">
       <option name="closed" value="true" />
