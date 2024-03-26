@@ -1,16 +1,15 @@
 # Stage de construction
 FROM rust:latest as builder
-WORKDIR /usr/src/drink
 
 # Copiez tous les membres du workspace ainsi que le fichier de workspace.
-COPY ./Cargo.toml ./
+# Pre-building de drink pour le caching des dépendances
+WORKDIR /usr/src/drink
+COPY ./Cargo.toml ./Cargo.toml
 COPY ./common ./common
 COPY ./services ./services
+COPY .env .env
 
-# Pre-building de drink pour le caching des dépendances
-WORKDIR /usr/src/drink/services/drink
-COPY ./common/src ./../../common/src
-COPY ./services/drink/src ./src
+# Création du build release
 RUN cargo build --release
 
 # Stage d'exécution
@@ -19,6 +18,6 @@ RUN apt-get update && apt-get install -y openssl && apt-get install -y ca-certif
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/src/drink/target/release/drink /usr/local/bin/drink
-EXPOSE 8000
+EXPOSE 8003
 
 CMD ["drink"]
