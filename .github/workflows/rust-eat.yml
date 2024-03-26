@@ -14,10 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run tests
-      run: |
-        cd services/eat/src
-        cargo test --verbose
+      run: cargo test --verbose
     - name: Build
-      run: |
-        cd services/eat/src
-        cargo build --verbose
+      run: cargo build --verbose
