@@ -1,7 +1,6 @@
-use dotenv::dotenv;
+use dotenv_codegen::dotenv;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::env;
 
 // Suite de structure pour gérer le JSON de Google API Place
 #[derive(Serialize, Deserialize, Debug)]
@@ -93,7 +92,6 @@ impl Emplacement {
 // On récupère le nom, la note, l'adresse et la photo de l'endroit qu'on regroupe dans un vecteur de "Emplacement"
 pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
     let data: TypePlace = serde_json::from_value(value.clone())?;
-    dotenv().expect("Impossible de charger le fichier .env");
     let mut place_list = Vec::new();
     for place in data.results {
         // TODO : La clé API se retrouve dans l'URL. Voir pour sécuriser celà.
@@ -101,15 +99,12 @@ pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
             Some(photos) if !photos.is_empty() => format!(
                 "https://maps.googleapis.com/maps/api/place/photo?photoreference={}&sensor=false&maxheight=1000&maxwidth=1000&key={}",
                 photos[0].photo_reference,
-                env::var("GOOGLE_API_KEY")?
+                dotenv!("GOOGLE_API_KEY").to_string()
             ),
             _ => String::from(""),
         };
 
-        let rating = match place.rating {
-            Some(rating) => rating,
-            None => 0.0,
-        };
+        let rating = place.rating.unwrap_or_else(|| 0.0);
 
         let place = Emplacement::new(place.name, rating, place.vicinity, picture);
         place_list.push(place);
