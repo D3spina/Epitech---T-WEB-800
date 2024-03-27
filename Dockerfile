@@ -18,6 +18,6 @@ RUN apt-get update && apt-get install -y openssl && apt-get install -y ca-certif
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/src/sleep/target/release/sleep /usr/local/bin/sleep
-EXPOSE 8002
+EXPOSE 8004
 
 CMD ["sleep"]
