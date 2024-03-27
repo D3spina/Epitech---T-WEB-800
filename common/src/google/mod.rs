@@ -1,7 +1,6 @@
 use anyhow::{Context, Result};
-use dotenv::dotenv;
+use dotenv_codegen::dotenv;
 use serde_json::Value;
-use std::env;
 
 // Importation des modules
 pub mod nearly_place_model;
@@ -19,13 +18,12 @@ impl Google {
     // Initialisation
     pub fn new() -> Self {
         let (lat, lng) = (0.0, 0.0);
-        dotenv().expect("Impossible de charger le fichier .env");
         Self {
             city: "".to_string(),
             lat,
             lng,
-            api_key: env::var("GOOGLE_API_KEY")
-                .expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
+            api_key: dotenv!("GOOGLE_API_KEY")
+                .to_string(),
         }
     }
 
@@ -103,7 +101,7 @@ impl Google {
         self.check_api().await?;
         let location = format!("{},{}", self.lat, self.lng);
         let url = format!("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type={}&key={}",
-                          location, radius, type_place, self.api_key);
+                              location, radius, type_place, self.api_key);
         let client = reqwest::Client::new();
         let _response = client
             .get(url)
@@ -127,31 +125,30 @@ mod tests {
     #[tokio::test]
     // Test pour une ville spécifique
     async fn test_google_1() {
-        dotenv().expect("Impossible de charger le fichier .env");
         let expected_google: Google = Google {
             city: String::from("Paris"),
             lat: 48.856614,
             lng: 2.3522219,
-            api_key: env::var("GOOGLE_API_KEY")
-                .expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
+            api_key: dotenv!("GOOGLE_API_KEY")
+                .to_string(),
         };
         let mut result = Google::new();
         result
             .geocoding(String::from("Paris"))
             .await
-            .expect("nike ta mère");
+            .expect("erreur dans la récupération des données");
         assert_eq!(result, expected_google);
     }
 
     #[tokio::test]
     // Test pour une addresse spécifique
     async fn test_google_2() {
-        dotenv().expect("Impossible de charger le fichier .env");
         let expected_google = Google {
             city: "80 Rue saint george 54000 Nancy".to_string(),
             lat: 48.6924497,
             lng: 6.1881741,
-            api_key: env::var("GOOGLE_API_KEY").expect("La clé API GOOGLE_API_KEY n'a pas été définie"),
+            api_key: dotenv!("GOOGLE_API_KEY")
+                .to_string(),
         };
         let mut result = Google::new();
         result
@@ -177,6 +174,7 @@ mod tests {
         let mut google = Google::new();
         let _ = google.geocoding(String::from("Paris")).await;
         let _result = google.nearby_place("restaurant".to_string(), 1000).await;
+        assert!(_result.is_ok());
     }
 
     #[tokio::test]

@@ -1,7 +1,10 @@
 use mysql::*;
-//use dotenv::dotenv;
+//use dotenv_codegen::dotenv;
 use mysql::prelude::Queryable;
 
+// TODO Use dotenv_codegen : Le fichier .env est partie dans la racine du projet
+// TODO tu appelles la variable d'environnement avec dotenv!("NOM_VARIABLE")
+// TODO si besoin tu peux lui rajouter .to_string() pour le convertir en String
 pub struct Database {
     pool: Pool
 }
