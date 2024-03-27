@@ -40,5 +40,3 @@ pub(crate) async fn get_google(localisation: String, radius: i32, types: String)
         .expect("Erreur dans la récupération des données dans la fonction get_google");
     result
 }
-
-
