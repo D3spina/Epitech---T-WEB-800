@@ -1,13 +1,15 @@
 # Stage de construction
 FROM rust:latest as builder
-WORKDIR /usr/src/travel
 
 # Copiez tous les membres du workspace ainsi que le fichier de workspace.
+# Pre-building de travel pour le caching des dépendances
+WORKDIR /usr/src/travel
+COPY ./Cargo.toml ./Cargo.toml
 COPY ./common ./common
 COPY ./services ./services
+COPY .env .env
 
-# Pre-building de travel pour le caching des dépendances
-WORKDIR /usr/src/travel/services/travel
+# Création du build release
 RUN cargo build --release
 
 # Stage d'exécution
@@ -15,7 +17,7 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get install -y openssl && apt-get install -y ca-certificates && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=builder /usr/src/travel/services/travel/target/release/traval /usr/local/bin/travel
-EXPOSE 8001
+COPY --from=builder /usr/src/travel/target/release/travel /usr/local/bin/travel
+EXPOSE 8002
 
 CMD ["travel"]

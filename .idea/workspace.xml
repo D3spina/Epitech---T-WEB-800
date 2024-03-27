@@ -9,9 +9,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0ce9a27-b413-4c05-9404-c92af16077bb" name="Changes" comment="back with .env">
+      <change afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/besoin_utilisateur.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/common/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/google/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/google/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/google/nearly_place_model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/google/nearly_place_model.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/webserver/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/tests/integration 2.rs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/normesdecode.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/src/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +92,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/services/travel/src" />
       <recent name="$PROJECT_DIR$/services/travel/src/structure" />
       <recent name="$PROJECT_DIR$/common/src" />
