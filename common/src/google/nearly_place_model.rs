@@ -1,7 +1,6 @@
 use dotenv_codegen::dotenv;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::env;
 
 // Suite de structure pour gérer le JSON de Google API Place
 #[derive(Serialize, Deserialize, Debug)]
