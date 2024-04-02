@@ -3,11 +3,15 @@ name = "common"
 version = "0.1.0"
 edition = "2021"
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [dependencies]
 tokio = {  version = "1.36.0", features = ["full"] }
 anyhow = "1.0.80"
-reqwest = { version = "0.11.25", features = ["json"] }
+reqwest = { version = "0.12.2", features = ["json"] }
 serde_json = "1.0.114"
 dotenv = "0.15.0"
 serde = { version = "1.0.197", features = ["derive"] }
 dirs = "5.0.1"
+mysql = "25.0.0"
+jsonwebtoken = "7.2.0"

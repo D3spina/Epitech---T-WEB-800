@@ -1,3 +1,4 @@
+use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::env;
@@ -6,7 +7,7 @@ use std::env;
 #[derive(Serialize, Deserialize, Debug)]
 struct TypePlace {
     html_attributions: Vec<Value>,
-    next_page_token: String,
+    next_page_token: Option<String>,
     results: Vec<Place>,
     status: String,
 }
@@ -20,14 +21,14 @@ struct Place {
     icon_mask_base_uri: String,
     name: String,
     opening_hours: Option<OpeningHours>,
-    photos: Vec<Photo>,
+    photos: Option<Vec<Photo>>,
     place_id: String,
     plus_code: PlusCode,
-    rating: f64,
+    rating: Option<f64>,
     reference: String,
     scope: String,
     types: Vec<String>,
-    user_ratings_total: u64,
+    user_ratings_total: Option<u64>,
     vicinity: String,
 }
 
@@ -92,11 +93,25 @@ impl Emplacement {
 // On récupère le nom, la note, l'adresse et la photo de l'endroit qu'on regroupe dans un vecteur de "Emplacement"
 pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
     let data: TypePlace = serde_json::from_value(value.clone())?;
+    dotenv().expect("Impossible de charger le fichier .env");
     let mut place_list = Vec::new();
     for place in data.results {
         // TODO : La clé API se retrouve dans l'URL. Voir pour sécuriser celà.
-        let picture = format!("https://maps.googleapis.com/maps/api/place/photo?photoreference={}&sensor=false&maxheight=1000&maxwidth=1000&key={}", place.photos[0].photo_reference, env::var("GOOGLE_API_KEY")?);
-        let place = Emplacement::new(place.name, place.rating, place.vicinity, picture);
+        let picture = match place.photos {
+            Some(photos) if !photos.is_empty() => format!(
+                "https://maps.googleapis.com/maps/api/place/photo?photoreference={}&sensor=false&maxheight=1000&maxwidth=1000&key={}",
+                photos[0].photo_reference,
+                env::var("GOOGLE_API_KEY")?
+            ),
+            _ => String::from(""),
+        };
+
+        let rating = match place.rating {
+            Some(rating) => rating,
+            None => 0.0,
+        };
+
+        let place = Emplacement::new(place.name, rating, place.vicinity, picture);
         place_list.push(place);
     }
     Ok(place_list)
