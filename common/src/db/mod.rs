@@ -43,3 +43,20 @@ impl Database {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::fmt::Error;
+    use serde_json::error::Category::Data;
+    use crate::db::Database;
+
+    use tokio;
+
+    use super::*;
+
+    #[tokio::test]
+    async fn test_empty() {
+        assert!(Database::query("").is_err());
+    }
+
+}
