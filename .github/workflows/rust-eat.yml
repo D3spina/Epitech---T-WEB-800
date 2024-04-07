@@ -3,7 +3,7 @@ name: Rust-eat
 on:
   push:
     branches: 
-     - "service-eat"
+     - service-eat
 env:
   CARGO_TERM_COLOR: always
 
