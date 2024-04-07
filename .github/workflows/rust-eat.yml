@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - service-eat
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
