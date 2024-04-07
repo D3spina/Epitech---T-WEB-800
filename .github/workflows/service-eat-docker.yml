@@ -1,9 +1,10 @@
 name: Deploy Service Eat
 
 on:
-  push:
-    branches:
-      - service-eat
+  workflow_run:
+    workflows: ["Rust-eat"]
+    types:
+      - completed
 
 jobs:
   build-push-and-deploy:
