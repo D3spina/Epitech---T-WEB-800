@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-push-and-deploy:
-    runs-on: debian:bookworm@sha256:c2cedd7f80a4dd0f9f80d3699bd433ccf3de33ab63bfa2d4c4ba870c998222d6
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
