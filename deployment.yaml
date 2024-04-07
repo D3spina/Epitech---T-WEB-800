@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eat
+  namespace: eat
+  labels:
+    name: eat
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eat
+  template:
+    metadata:
+      labels:
+        app: eat
+    spec:
+      containers:
+        - name: eat
+          image: d3spina/t-web-800:eat-latest
+          imagePullPolicy: Always
+          env:
+            - name: ROCKET_ADDRESS
+              value: "0.0.0.0"
+            - name: ROCKET_PORT
+              value: "8002"
+          ports:
+            - containerPort: 8002
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      imagePullSecrets:
+        - name: my-docker-credentials
