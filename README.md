@@ -1,4 +1,4 @@
-![Rust-eat](https://github.com/votre_utilisateur/votre_depot/workflows/Rust-eat%20Test/badge.svg)
+[![Rust-eat](https://github.com/thybux/t-web-800/actions/workflows/rust-eat.yml/badge.svg?branch=service-eat&event=check_run)](https://github.com/thybux/t-web-800/actions/workflows/rust-eat.yml)
 
 
 # T-WEB-800
