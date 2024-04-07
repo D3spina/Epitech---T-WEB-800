@@ -1,4 +1,4 @@
-[![Rust-eat](https://github.com/thybux/t-web-800/actions/workflows/rust-eat.yml/badge.svg?branch=service-eat&event=check_run)](https://github.com/thybux/t-web-800/actions/workflows/rust-eat.yml)
+[![Rust-eat](https://github.com/thybux/t-web-800/actions/workflows/rust-eat.yml/badge.svg?branch=service-eat&event=check_run)](https://github.com/thybux/t-web-800/actions/workflows/rust-eat.yml) [![Deploy Service Eat](https://github.com/thybux/t-web-800/actions/workflows/service-eat-docker.yml/badge.svg?branch=service-eat&event=deployment_status)](https://github.com/thybux/t-web-800/actions/workflows/service-eat-docker.yml)
 
 
 # T-WEB-800
