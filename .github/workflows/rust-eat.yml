@@ -2,17 +2,21 @@ name: Rust-eat
 
 on:
   push:
-    branches: ["service-eat"]
+    branches: [ "service-eat" ]
+  pull_request:
+    branches: [ "service-eat" ]
+
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Run tests
-      run: cargo test --verbose
     - name: Build
       run: cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
