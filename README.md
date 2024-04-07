@@ -1,3 +1,6 @@
+![Rust-eat](https://github.com/votre_utilisateur/votre_depot/workflows/Rust-eat%20Test/badge.svg)
+
+
 # T-WEB-800
 
 ## Description
