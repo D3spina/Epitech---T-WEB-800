@@ -4,8 +4,9 @@ services:
                 build:
                         context: .
                         dockerfile: Dockerfile
-                image: drink
+                image: eat
                 ports:
-                        - "8003:8000"
+                        - "8002:8002"
                 environment:
                         ROCKET_ADDRESS: "0.0.0.0"
+                        ROCKET_PORT: "8002"
