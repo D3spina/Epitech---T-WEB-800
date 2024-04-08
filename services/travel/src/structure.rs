@@ -1,7 +1,7 @@
-use std::env;
 use anyhow::Context;
 use serde::{Serialize, Deserialize};
 use serde_json::{from_value, Value, Error};
+use dotenv_codegen::dotenv;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Root {
@@ -111,8 +111,7 @@ pub fn exploit_routes(value: Value, mode: String) -> Result<RouteInformations, E
 }
 
 pub async fn get_google_routes(depart: &str, arrivee: &str, modes: &[&str]) -> Result<Vec<RouteInformations>, anyhow::Error> {
-    dotenv::dotenv().expect("Erreur de chargement du fichier .env");
-    let route_api_key = env::var("ROUTE_API_KEY").expect("ROUTE_API_KEY doit être défini");
+    let route_api_key = dotenv!("GOOGLE_API_KEY").to_string();
     let mut routes: Vec<RouteInformations> = Vec::new();
 
     for mode in modes {

@@ -9,13 +9,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f0ce9a27-b413-4c05-9404-c92af16077bb" name="Changes" comment="back with .env">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/rust-test.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.github/workflows/service-travel-deploy.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/deployment.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/travel/src/structure.rs" beforeDir="false" afterPath="$PROJECT_DIR$/services/travel/src/structure.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
