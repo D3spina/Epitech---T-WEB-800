@@ -10,6 +10,7 @@ on:
      - service-sleep
      - service-enjoy
      - service-travel
+  workflow_dispatch:
 env:
   CARGO_TERM_COLOR: always
 
