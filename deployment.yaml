@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travel
+  namespace: travel
+  labels:
+    name: travel
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: travel
+  template:
+    metadata:
+      labels:
+        app: travel
+    spec:
+      containers:
+        - name: travel
+          image: d3spina/t-web-800:travel-latest
+          imagePullPolicy: Always
+          env:
+            - name: ROCKET_ADDRESS
+              value: "0.0.0.0"
+            - name: ROCKET_PORT
+              value: "8006"
+          ports:
+            - containerPort: 8006
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+      imagePullSecrets:
+        - name: my-docker-credentials

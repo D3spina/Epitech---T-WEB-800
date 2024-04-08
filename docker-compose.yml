@@ -4,8 +4,9 @@ services:
                 build:
                         context: .
                         dockerfile: Dockerfile
-                image: enjoy
+                image: travel
                 ports:
-                        - "8006:8000"
+                        - "8006:8006"
                 environment:
                         ROCKET_ADDRESS: "0.0.0.0"
+                        ROCKET_PORT: "8006"
