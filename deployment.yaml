@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: travel
-  namespace: travel
+  name: enjoy
+  namespace: enjoy
   labels:
-    name: travel
+    name: enjoy
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: travel
+      app: enjoy
   template:
     metadata:
       labels:
-        app: travel
+        app: enjoy
     spec:
       containers:
-        - name: travel
-          image: d3spina/t-web-800:travel-latest
+        - name: enjoy
+          image: d3spina/t-web-800:enjoy-latest
           imagePullPolicy: Always
           env:
             - name: ROCKET_ADDRESS
