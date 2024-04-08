@@ -8,7 +8,7 @@ extern crate common;
 use common::google::nearly_place_model::{exploit_json, Emplacement};
 use common::google::Google;
 
-#[get("/service/drink/<localisation>/<radius>")]
+#[get("/service/sleep/<localisation>/<radius>")]
 async fn index(localisation: String, radius: i32) -> Json<HashMap<String, Vec<Emplacement>>> {
     let types = ["lodging", "campground"];
     let mut res: HashMap<String, Vec<Emplacement>> = HashMap::new();
