@@ -18,6 +18,6 @@ RUN apt-get update && apt-get install -y openssl && apt-get install -y ca-certif
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=builder /usr/src/travel/target/release/travel /usr/local/bin/travel
-EXPOSE 8002
+EXPOSE 8005
 
 CMD ["travel"]
