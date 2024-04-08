@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eat
-  namespace: eat
+  name: drink
+  namespace: drink
   labels:
-    name: eat
+    name: drink
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: eat
+      app: drink
   template:
     metadata:
       labels:
-        app: eat
+        app: drink
     spec:
       containers:
-        - name: eat
-          image: d3spina/t-web-800:eat-latest
+        - name: drink
+          image: d3spina/t-web-800:drink-latest
           imagePullPolicy: Always
           env:
             - name: ROCKET_ADDRESS
               value: "0.0.0.0"
             - name: ROCKET_PORT
-              value: "8002"
+              value: "8003"
           ports:
             - containerPort: 8002
           resources:

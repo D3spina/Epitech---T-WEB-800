@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: eat-service
-  namespace: eat
+  name: drink-service
+  namespace: drink
 spec:
   selector:
-    app: eat
+    app: drink
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8002
+      targetPort: 8003
   type: LoadBalancer
