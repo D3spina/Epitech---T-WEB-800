@@ -1,10 +1,11 @@
 use dotenv_codegen::dotenv;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 // Suite de structure pour gérer le JSON de Google API Place
 #[derive(Serialize, Deserialize, Debug)]
 struct TypePlace {
-    html_attributions: Vec<serde_json::Value>,
+    html_attributions: Vec<Value>,
     next_page_token: Option<String>,
     results: Vec<Place>,
     status: String,
@@ -74,22 +75,26 @@ pub struct Emplacement {
     rating: f64,
     address: String,
     picture: String,
+    lat: f64,
+    long: f64,
 }
 
 impl Emplacement {
-    fn new(name: String, rating: f64, address: String, picture: String) -> Self {
+    fn new(name: String, rating: f64, address: String, picture: String, lat: f64, long: f64) -> Self {
         Self {
             name,
             rating,
             address,
             picture,
+            lat,
+            long
         }
     }
 }
 
 // Cette fonction sert à récupérer depuis le JSON de l'API Google Place les informations qui nous intéressent
 // On récupère le nom, la note, l'adresse et la photo de l'endroit qu'on regroupe dans un vecteur de "Emplacement"
-pub fn exploit_json(value: serde_json::Value) -> Result<Vec<Emplacement>, anyhow::Error> {
+pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
     let data: TypePlace = serde_json::from_value(value.clone())?;
     let mut place_list = Vec::new();
     for place in data.results {
@@ -104,8 +109,9 @@ pub fn exploit_json(value: serde_json::Value) -> Result<Vec<Emplacement>, anyhow
         };
 
         let rating = place.rating.unwrap_or_else(|| 0.0);
-
-        let place = Emplacement::new(place.name, rating, place.vicinity, picture);
+        let lat = place.geometry.location.lat;
+        let long = place.geometry.location.lng;
+        let place = Emplacement::new(place.name, rating, place.vicinity, picture, lat, long);
         place_list.push(place);
     }
     Ok(place_list)
