@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: enjoy-service
-  namespace: enjoy
+  name: eat-service
+  namespace: eat
 spec:
   selector:
-    app: enjoy
+    app: eat
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8006
+      targetPort: 8002
   type: NodePort
