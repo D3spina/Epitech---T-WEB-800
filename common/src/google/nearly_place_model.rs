@@ -75,15 +75,19 @@ pub struct Emplacement {
     rating: f64,
     address: String,
     picture: String,
+    lat: f64,
+    long: f64,
 }
 
 impl Emplacement {
-    fn new(name: String, rating: f64, address: String, picture: String) -> Self {
+    fn new(name: String, rating: f64, address: String, picture: String, lat: f64, long: f64) -> Self {
         Self {
             name,
             rating,
             address,
             picture,
+            lat,
+            long
         }
     }
 }
@@ -105,8 +109,9 @@ pub fn exploit_json(value: Value) -> Result<Vec<Emplacement>, anyhow::Error> {
         };
 
         let rating = place.rating.unwrap_or_else(|| 0.0);
-
-        let place = Emplacement::new(place.name, rating, place.vicinity, picture);
+        let lat = place.geometry.location.lat;
+        let long = place.geometry.location.lng;
+        let place = Emplacement::new(place.name, rating, place.vicinity, picture, lat, long);
         place_list.push(place);
     }
     Ok(place_list)
