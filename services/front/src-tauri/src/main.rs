@@ -12,7 +12,7 @@ async fn fetch_restaurants() -> Result<Vec<Restaurant>, reqwest::Error> {
     let url = "http://164.90.242.159/service/eat/nancy/1000";
     let response = reqwest::get(url).await?;
     let restaurants = response.json::<Vec<Restaurant>>().await?;
-    println!("voici les restaurant: {:#?}", restaurants);
+    // println!("voici les restaurant: {:#?}", restaurants);
     Ok(restaurants)
 }
 

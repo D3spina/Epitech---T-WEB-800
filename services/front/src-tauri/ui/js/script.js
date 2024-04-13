@@ -25,12 +25,14 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
                     const image = document.createElement('img');
                     image.src = restaurant.picture;
-
+                    
                     const rating = document.createElement('p');
                     rating.textContent = parseFloat(restaurant.rating.toFixed(1));
+                    rating.className = "rating";
 
                     const address = document.createElement('p');
                     address.textContent = restaurant.address;
+                    address.className = 'address'
 
 
                     imageContainer.appendChild(image)

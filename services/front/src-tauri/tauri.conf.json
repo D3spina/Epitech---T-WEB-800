@@ -57,7 +57,7 @@
       {
         "fullscreen": false,
         "height": 1000,
-        "resizable": true,
+        "resizable": false,
         "title": "index",
         "width": 1200
       }

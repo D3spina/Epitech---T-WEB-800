@@ -19,31 +19,29 @@
               <div class="arrive">
                   <input type="text" id="depart" name="depart" placeholder="départ"><br><br>
                   <input type="text" id="arrivee" name="arrivee" placeholder="arrivée"><br><br>
+                  <input type="number" id="rayon" name="rayon" placeholder="Rayon d'activité Km" min="1">
               </div>
-    
-            <div class="carousel">
-              <div class="carousel-item">
-                <input type="checkbox" id="bar" name="activity" value="bar">
-                <label for="bar">Bar</label>
+            <div class="container-filtre">
+              <div class="carousel">
+                <div class="carousel-item">
+                  <input type="checkbox" id="bar" name="activity" value="bar">
+                  <label for="bar">Bar</label>
+                </div>
+                <div class="carousel-item">
+                  <input type="checkbox" id="restaurant" name="activity" value="restaurant">
+                  <label for="restaurant">Restaurant</label>
+                </div>
+                <div class="carousel-item">
+                  <input type="checkbox" id="sport" name="activity" value="sport">
+                  <label for="sport">Sport</label>
+                </div>
               </div>
-              <div class="carousel-item">
-                <input type="checkbox" id="restaurant" name="activity" value="restaurant">
-                <label for="restaurant">Restaurant</label>
-              </div>
-              <div class="carousel-item">
-                <input type="checkbox" id="sport" name="activity" value="sport">
-                <label for="sport">Sport</label>
+              <div class="validate">
+                  <button type="submit">Enregistrer</button>
+                  <button type="submit">Login</button>
               </div>
             </div>
-              <div class="validate">
-                  <label for="rayon">Rayon d'activité (km):</label>
-                  <input type="number" id="rayon" name="rayon" min="1">
-                  <input type="submit" value="Enregistrer">
-                  <input type="submit" value="Login">
-              </div>
           </form>
-
-
         </div>
         <div id="map" class="map" ></div>
     </div>
