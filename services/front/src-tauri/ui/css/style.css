@@ -1,4 +1,91 @@
-.ok{
-    border: solid 1px black;
-    width: 100px;
+.container-header{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 67vw;
+}
+
+.map{
+    height: 81vh;
+    width: 67vw;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.left-container{
+    max-width: 30%;
+    height: 950px;
+    border: solid;
+    overflow: scroll;
+}
+
+.header{
+    width: 67vw;
+    height: 15vh;
+    border: solid;
+}
+
+.restaurant {
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 10px;
+}
+.restaurant img {
+    max-width: 100px;
+    max-height: 100px;
+    margin-right: 10px;
+}
+.restaurant div {
+    display: flex;
+    border: solid;
+    align-items: center;
+}
+
+.name{
+  max-width: 150px;
+  width: fit-content;
+}
+
+.topContainer{
+  display: flex;
+  justify-content: space-between;
+}
+
+.carousel {
+  display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+  overflow-x: auto;
+ }
+
+.carousel-item {
+  width: 150px;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+
+.carousel-item label {
+  display: block;
+  cursor: pointer;
+}
+.validate{
+    display: flex;
+    flex-direction: row;
+}
+
+.arrive{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10%;
 }

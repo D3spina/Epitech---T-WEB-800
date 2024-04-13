@@ -1,20 +1,58 @@
-import './google/google'
-
-
 document.addEventListener('DOMContentLoaded', async (event) => {
 
-    try {
-        const restaurants = await window.__TAURI__.invoke('get_data');
-        const listeHtml = restaurants.map(r =>
-            `<li>${r.nom}, ${r.adresse} - Cuisine ${r.cuisine}</li>`
-        ).join('');
-        document.getElementById('liste-restaurants').innerHTML = listeHtml;
-    } catch (e) {
-        console.error('Erreur lors de la récupération des données', e);
+    async function loadRestaurants() {
+        try {
+            // Attendre la résolution de la promesse pour obtenir les données des restaurants
+            const restaurants = await window.__TAURI__.invoke('get_restaurants');
+
+            const dataList = document.getElementById('data-list');
+            dataList.innerHTML = '';
+
+            if (restaurants && Array.isArray(restaurants)) {
+                restaurants.forEach(restaurant => {
+                    const restaurantDiv = document.createElement('div');
+                    restaurantDiv.className = 'restaurant';
+
+                    const infoDiv = document.createElement('div');
+
+                    const infoDivRatingName = document.createElement('div')
+
+                    const imageContainer = document.createElement('div');
+
+                    const name = document.createElement('h3');
+                    name.textContent = restaurant.name;
+                    name.className = 'name';
+
+                    const image = document.createElement('img');
+                    image.src = restaurant.picture;
+
+                    const rating = document.createElement('p');
+                    rating.textContent = parseFloat(restaurant.rating.toFixed(1));
+
+                    const address = document.createElement('p');
+                    address.textContent = restaurant.address;
+
+
+                    imageContainer.appendChild(image)
+
+
+                    infoDivRatingName.appendChild(name);
+                    infoDivRatingName.appendChild(rating);
+                    infoDivRatingName.appendChild(imageContainer);
+
+                    infoDivRatingName.className = "topContainer";
+
+                    infoDiv.appendChild(address);
+                    restaurantDiv.appendChild(infoDivRatingName)
+                    restaurantDiv.appendChild(infoDiv);
+                    dataList.appendChild(restaurantDiv);
+                });
+            }
+        } catch (error) {
+            console.error('Failed to load restaurants', error);
+        }
     }
 
-    window.onload = function () {
-        let googleMap = new Google();
-    };
+    await loadRestaurants();
 
 });

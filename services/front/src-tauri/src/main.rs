@@ -1,42 +1,31 @@
-use serde::Serialize;
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+use serde::{Deserialize, Serialize};
 #[cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-
-
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize, Debug)]
 struct Restaurant {
-  nom: String,
-  adresse: String,
-  cuisine: String,
+    name: String,
+    rating: f32,
+    address: String,
+    picture: String,
+}
+
+async fn fetch_restaurants() -> Result<Vec<Restaurant>, reqwest::Error> {
+    let url = "http://164.90.242.159/service/eat/nancy/1000";
+    let response = reqwest::get(url).await?;
+    let restaurants = response.json::<Vec<Restaurant>>().await?;
+    println!("voici les restaurant: {:#?}", restaurants);
+    Ok(restaurants)
 }
 
 #[tauri::command]
-fn get_data() -> Vec<Restaurant> {
-  vec![
-    Restaurant {
-      nom: "Chez Antoine".into(),
-      adresse: "123 rue de la République, Paris".into(),
-      cuisine: "Française".into(),
-    },
-    Restaurant {
-      nom: "La Bella Napoli".into(),
-      adresse: "456 avenue de l'Opéra, Marseille".into(),
-      cuisine: "Italienne".into(),
-    },
-    Restaurant {
-      nom: "Le Dragon d'Or".into(),
-      adresse: "789 boulevard Voltaire, Lyon".into(),
-      cuisine: "Chinoise".into(),
-    },
-  ]
+async fn get_restaurants() -> Result<Vec<Restaurant>, String> {
+    println!("saluthzbvlebrlebr");
+    fetch_restaurants().await.map_err(|e| e.to_string())
 }
-
 
 fn main() {
-  tauri::Builder::default()
-      .invoke_handler(tauri::generate_handler![get_data])
-      .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![get_restaurants])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+    println!("coucou");
 }
-
-
