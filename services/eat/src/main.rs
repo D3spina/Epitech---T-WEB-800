@@ -1,3 +1,4 @@
+use rocket::serde::Deserialize;
 use serde_json::Value;
 use rocket::serde::json::Json;
 
@@ -6,6 +7,34 @@ extern crate rocket;
 extern crate common;
 use common::google::nearly_place_model::{exploit_json, Emplacement};
 use common::google::Google;
+use serde::Serialize;
+
+#[derive(Serialize, Deserialize, Debug)]
+struct CityCoord {
+    lat: f64,
+    long: f64,
+}
+
+impl CityCoord {
+    fn new(lat: f64, long: f64) -> Self {
+        Self {
+            lat,
+            long
+        }
+    }
+}
+
+#[get("/coord/<localisation>")]
+async fn coord(localisation: String) -> Json<CityCoord> {
+    let mut google = Google::new();
+    google
+        .geocoding(localisation)
+        .await
+        .expect("geocoding n'a pas été éxécuté correctement");
+    let result = CityCoord::new(google.lat, google.lng);
+    Json(result)
+}
+
 // URL pour récupérer les restaurant dans un périmétre donné et pour une localisation donnée
 #[get("/service/eat/<localisation>/<radius>")]
 async fn index(localisation: String, radius: i32) -> Json<Vec<Emplacement>> {
@@ -16,7 +45,7 @@ async fn index(localisation: String, radius: i32) -> Json<Vec<Emplacement>> {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index])
+    rocket::build().mount("/", routes![index, coord])
 }
 
 pub(crate) async fn get_google(localisation: String, radius: i32) -> Value {
