@@ -47,6 +47,10 @@ html {
   /*border: solid;*/
 }
 
+.addImage {
+  width: 30px;
+}
+
 .restaurant {
   padding: 10px;
   height: 150px;
@@ -56,8 +60,10 @@ html {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;*/
   color: #F9FDFF;
   border-radius: 1rem;
-  background-color: #7D7CF8;
-  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  background: #7641F5;
+  /*background-color: #7D7CF8;*/
+  box-shadow: #5E5DF0 0 10px 20px -10px;
+  /*box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;*/
 }
 
 .restaurant img {
@@ -71,33 +77,42 @@ html {
   display: flex;
   /*border: solid;*/
   align-items: center;
+  justify-content: space-between;
+  padding-bottom: 5px;
 }
 
 
 .name {
-  max-width: 150px;
+  max-width: 120px;
   width: fit-content;
-  font-family: "Baloo Da 2", serif;
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+  font-size: 18px;
+  /*font-family: "Baloo Da 2", serif;*/
 }
-.address{
-  font-family: "Baloo Da 2", serif;
+
+.address {
+  /*font-family: "Baloo Da 2", serif;*/
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
   font-style: italic;
+  font-size: 14px;
 }
-.rating{
-  font-family: "Baloo Da 2", serif;
+
+.rating {
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
   font-weight: lighter;
 }
 
 .topContainer {
   display: flex;
   justify-content: space-between;
+  border-bottom: solid 1px white;
 }
 
 .carousel {
   width: 75%;
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  justify-content: space-between;
   justify-content: center;
   overflow-x: auto;
 }
@@ -108,6 +123,11 @@ html {
   box-sizing: border-box;
   text-align: center;
   border: none;
+}
+
+.carousel-item {
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+  font-size: 12px;
 }
 
 .validate {
@@ -128,7 +148,7 @@ html {
 
 .arrive>input {
   border: none;
-  color: #D3E3FD;
+  color: black;
   background: #F9FDFF;
   border-bottom: solid 1px #380897;
 }
@@ -141,6 +161,30 @@ html {
 }
 
 .validate>button {
+  height: 30px;
+  max-width: 120px;
+  background: #7641F5;
+  border-radius: 999px;
+  box-shadow: #5E5DF0 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #F9FDFF;
+  cursor: pointer;
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: normal;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}
+
+.search {
   height: 30px;
   max-width: 120px;
   background: #7641F5;

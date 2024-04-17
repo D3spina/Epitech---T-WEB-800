@@ -17,25 +17,35 @@
         <div class="header">
           <form action="/submit-road-trip" method="post">
               <div class="arrive">
-                  <input type="text" id="depart" name="depart" placeholder="départ"><br><br>
-                  <input type="text" id="arrivee" name="arrivee" placeholder="arrivée"><br><br>
-                  <input type="number" id="rayon" name="rayon" placeholder="Rayon d'activité Km" min="1">
+                  <input type="text" id="depart" name="depart" placeholder="départ">
+                  <input type="text" id="arrivee" name="arrivee" placeholder="arrivée">
+                  <input type="number" id="rayon" name="rayon" placeholder="Rayon d'activité m" min="1">
+                  <div class="search" id="search" >Search</div>
               </div>
-            <div class="container-filtre">
-              <div class="carousel">
-                <div class="carousel-item">
-                  <input type="checkbox" id="bar" name="activity" value="bar">
-                  <label for="bar">Bar</label>
-                </div>
-                <div class="carousel-item">
-                  <input type="checkbox" id="restaurant" name="activity" value="restaurant">
-                  <label for="restaurant">Restaurant</label>
-                </div>
-                <div class="carousel-item">
-                  <input type="checkbox" id="sport" name="activity" value="sport">
-                  <label for="sport">Sport</label>
-                </div>
-              </div>
+                <div class="container-filtre">
+                  <div class="carousel">
+                    <div class="carousel-item">
+                      <input type="checkbox" id="bar" name="activity" value="bar">
+                      <label for="bar">Bar</label>
+                    </div>
+                    <div class="carousel-item">
+                      <input type="checkbox" id="restaurant" name="activity" value="restaurant">
+                      <label for="restaurant">Restaurant</label>
+                    </div>
+                    <div class="carousel-item">
+                      <input type="checkbox" id="sport" name="activity" value="sport">
+                      <label for="sport">Loisirs</label>
+                    </div>
+                    <div class="carousel-item">
+                      <input type="checkbox" id="restaurant" name="activity" value="restaurant">
+                      <label for="restaurant">Hébergements</label>
+                    </div>
+                    <div class="carousel-item">
+                      <input type="checkbox" id="restaurant" name="activity" value="restaurant">
+                      <label for="restaurant">Transports</label>
+                    </div>
+
+                  </div>
               <div class="validate">
                   <button type="submit">Enregistrer</button>
                   <button type="submit">Login</button>
