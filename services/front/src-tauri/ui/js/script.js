@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async (event) => {
+
   const { invoke } = window.__TAURI__.tauri;
 
   window.initMap = function() {
@@ -18,8 +19,15 @@ document.addEventListener('DOMContentLoaded', async (event) => {
       setupRoutes(departValue, arriveValue);
 
     }
-
   });
+
+
+  window.onclick = function(event) {
+    var modal = document.getElementById('myModal');
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 });
 
 
@@ -109,3 +117,15 @@ function setupRoutes(villeDepart, villeArrive) {
   }
 }
 
+
+function openModal() {
+  document.getElementById('myModal').style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById('myModal').style.display = "none";
+}
+
+function imprimerPage() {
+  window.print();
+}
