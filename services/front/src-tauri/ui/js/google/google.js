@@ -6,6 +6,7 @@ class Google {
       this.directionsRenderer = new google.maps.DirectionsRenderer();
       this.directionsRenderer.setMap(this.map);
       this.citySet = new Set();
+      this.geocoder = new google.maps.Geocoder();
     } catch (error) {
       console.error('Failed to initialize Google Maps:', error);
     }
@@ -33,6 +34,21 @@ class Google {
     });
     marker.addListener('click', function() {
       alert('Marqueur cliqué');
+    });
+  }
+
+  geocodeAddress(address) {
+    this.geocoder.geocode({ 'address': address }, (results, status) => {
+      if (status === 'OK') {
+        this.map.setCenter(results[0].geometry.location);
+        const marker = new google.maps.Marker({
+          map: this.map,
+          position: results[0].geometry.location
+        });
+        return marker;
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
     });
   }
 

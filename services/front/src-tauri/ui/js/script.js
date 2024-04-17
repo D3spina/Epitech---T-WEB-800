@@ -6,11 +6,28 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     window.googleMapInstance = new Google(); // Crée et stocke l'instance globalement
   };
 
-  await loadRestaurants(invoke, "Nancy", 1000);
+
 
   document.getElementById('search').addEventListener('click', async function() {
     const departValue = document.getElementById('depart').value;
     const arriveValue = document.getElementById('arrivee').value;
+    const rayonValue = document.getElementById('rayon').value;
+
+    let radios = document.querySelectorAll('input[type="radio"][name="activity"]');
+    radios.forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        let div = document.getElementById('data-list');
+        div.innerHTML = '';
+        console.log('L\'activité sélectionnée est : ' + this.value);
+        switch (this.value) {
+          case 'restaurant':
+            window.googleMapInstance.geocodeAddress()
+            loadRestaurants(invoke, departValue, parseInt(rayonValue))
+            loadRestaurants(invoke, arriveValue, parseInt(rayonValue))
+        }
+      });
+    });
+
 
     if (!departValue || !arriveValue) {
       alert("Veuillez vérifier vos villes");
@@ -31,21 +48,22 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 });
 
 
-
-
-
 async function loadRestaurants(invoke, ville, ratio) {
   try {
-    // Attendre la résolution de la promesse pour obtenir les données des restaurants
     invoke('get_restaurants', { ville: ville, ratio: ratio })
       .then((response) => {
         const restaurants = response;
-        //const restaurants = await window.__TAURI__.invoke('get_restaurants', { ville: "Nancy", ratio: 1000 });
         const dataList = document.getElementById('data-list');
-        dataList.innerHTML = '';
+        // dataList.innerHTML = '';
 
+        let count = 0
         if (restaurants && Array.isArray(restaurants)) {
           restaurants.forEach(restaurant => {
+            count += 1;
+            const marker = window.googleMapInstance.geocodeAddress(restaurant.address);
+            marker.addEventListener('click', function() {
+              scrollToRestaurant(this.restaurantId);
+            });
             const restaurantDiv = document.createElement('div');
             restaurantDiv.className = 'restaurant';
 
@@ -87,6 +105,7 @@ async function loadRestaurants(invoke, ville, ratio) {
             infoDiv.appendChild(addImage);
             restaurantDiv.appendChild(infoDivRatingName)
             restaurantDiv.appendChild(infoDiv);
+            restaurantDiv.id = `${ville} - ${count}`
             dataList.appendChild(restaurantDiv);
           });
         }
@@ -129,3 +148,18 @@ function closeModal() {
 function imprimerPage() {
   window.print();
 }
+
+function chargementCarrousel() {
+  let checkbox = document.getElementsByName('activity');
+  checkbox.addEventListener('click', () => {
+    console.log(checkbox.value)
+  })
+}
+
+function scrollToRestaurant(restaurantId) {
+  var element = document.getElementById(restaurantId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
