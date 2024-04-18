@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', async (event) => {
 
   const { invoke } = window.__TAURI__.tauri;
+  window.all_activity = []
 
   window.initMap = function() {
     window.googleMapInstance = new Google(); // Crée et stocke l'instance globalement
   };
+  let overview = document.getElementById('overview')
+  overview.addEventListener('click', () => {
+    openModal()
+
+  })
 
 
 
@@ -13,17 +19,41 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     const arriveValue = document.getElementById('arrivee').value;
     const rayonValue = document.getElementById('rayon').value;
 
+    if (departValue == "" || arriveValue == "" || rayonValue == "") {
+      alert("veuillez renseigner les champ de saisis")
+      return;
+    }
+
     let radios = document.querySelectorAll('input[type="radio"][name="activity"]');
     radios.forEach(function(radio) {
       radio.addEventListener('change', function() {
         let div = document.getElementById('data-list');
         div.innerHTML = '';
+        window.googleMapInstance.removeOtherMarkers()
         console.log('L\'activité sélectionnée est : ' + this.value);
         switch (this.value) {
           case 'restaurant':
-            // window.googleMapInstance.geocodeAddress()
-            loadRestaurants(invoke, departValue, parseInt(rayonValue))
-            loadRestaurants(invoke, arriveValue, parseInt(rayonValue))
+            commande = "get_restaurants"
+            break;
+          case 'accommodation':
+            commande = "get_sleep"
+            break;
+
+          //case 'sport':
+          //  commande = "get_sport"
+          //case 'bar':
+          //  commande = "get_bar"
+          //case 'transport':
+          //  commande = "get_transport"
+        }
+        // console.log(arriveValue)
+        try {
+          Promise.all([
+            loadRestaurants(invoke, departValue, parseInt(rayonValue), commande),
+            loadRestaurants(invoke, arriveValue, parseInt(rayonValue), commande)
+          ]).catch(error => console.error('Error loading restaurants:', error));
+        } catch (err) {
+          console.error(err)
         }
       });
     });
@@ -34,7 +64,6 @@ document.addEventListener('DOMContentLoaded', async (event) => {
       return;
     } else {
       setupRoutes(departValue, arriveValue);
-
     }
   });
 
@@ -48,9 +77,9 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 });
 
 
-async function loadRestaurants(invoke, ville, ratio) {
+async function loadRestaurants(invoke, ville, ratio, commande) {
   try {
-    invoke('get_restaurants', { ville: ville, ratio: ratio })
+    invoke(commande, { ville: ville, radius: ratio })
       .then((response) => {
         const restaurants = response;
         const dataList = document.getElementById('data-list');
@@ -60,54 +89,70 @@ async function loadRestaurants(invoke, ville, ratio) {
         let count = 0
         if (restaurants && Array.isArray(restaurants)) {
           restaurants.forEach(restaurant => {
-            count += 1;
+            if (restaurant.rating > 4) {
+              count += 1;
 
 
-            window.googleMapInstance.geocodeAddress(restaurant)
+              window.googleMapInstance.geocodeAddress(restaurant)
 
-            const restaurantDiv = document.createElement('div');
-            restaurantDiv.className = 'restaurant';
+              const restaurantDiv = document.createElement('div');
+              restaurantDiv.className = 'restaurant';
 
-            const infoDiv = document.createElement('div');
+              const infoDiv = document.createElement('div');
 
-            const infoDivRatingName = document.createElement('div')
+              const infoDivRatingName = document.createElement('div')
 
-            const imageContainer = document.createElement('div');
+              const imageContainer = document.createElement('div');
 
-            const name = document.createElement('h3');
-            name.textContent = restaurant.name;
-            name.className = 'name';
+              const name = document.createElement('h3');
+              name.textContent = restaurant.name;
+              name.className = 'name';
 
-            const image = document.createElement('img');
-            image.src = restaurant.picture;
+              const image = document.createElement('img');
+              image.src = restaurant.picture;
 
-            const rating = document.createElement('p');
-            rating.textContent = parseFloat(restaurant.rating.toFixed(1));
-            rating.className = "rating";
+              const rating = document.createElement('p');
+              rat = parseFloat(restaurant.rating.toFixed(1));
+              if (rat == 0) {
+                rating.textContent = "pas noté"
+              } else {
+                rating.textContent = rat;
+              }
+              rating.className = "rating";
 
-            const address = document.createElement('p');
-            address.textContent = restaurant.address;
-            address.className = 'address'
+              const address = document.createElement('p');
+              address.textContent = restaurant.address;
+              address.className = 'address'
 
-            const addImage = document.createElement('img');
-            addImage.src = './assets/add.png'
-            addImage.className = "addImage";
+              const addImage = document.createElement('img');
+              addImage.src = './assets/add.png'
+              addImage.className = "addImage";
+
+              addImage.addEventListener('click', () => {
+                window.all_activity.push(restaurant)
+                alert('ativité ajouter avec succès')
+              })
 
 
-            imageContainer.appendChild(image)
+
+              if (restaurants.picture != "") {
+                imageContainer.appendChild(image)
+              }
 
 
-            infoDivRatingName.appendChild(name);
-            infoDivRatingName.appendChild(rating);
-            infoDivRatingName.appendChild(imageContainer);
+              infoDivRatingName.appendChild(name);
+              infoDivRatingName.appendChild(rating);
+              infoDivRatingName.appendChild(imageContainer);
 
-            infoDivRatingName.className = "topContainer";
-            infoDiv.appendChild(address);
-            infoDiv.appendChild(addImage);
-            restaurantDiv.appendChild(infoDivRatingName)
-            restaurantDiv.appendChild(infoDiv);
-            restaurantDiv.id = `${ville} - ${count}`
-            dataList.appendChild(restaurantDiv);
+              infoDivRatingName.className = "topContainer";
+              infoDiv.appendChild(address);
+              infoDiv.appendChild(addImage);
+              restaurantDiv.appendChild(infoDivRatingName)
+              restaurantDiv.appendChild(infoDiv);
+              restaurantDiv.id = `${ville} - ${count}`
+              dataList.appendChild(restaurantDiv);
+
+            }
           });
         }
       })
@@ -117,7 +162,23 @@ async function loadRestaurants(invoke, ville, ratio) {
   }
 }
 
+function contruction_modal() {
+  all_activity = window.all_activity
+  const depart = document.getElementById('depart').value
+  const arrive = document.getElementById('arrivee').value
 
+  const departModal = document.getElementById('depart-modal')
+  const arriveModal = document.getElementById('arrivee-modal')
+
+  departModal.textContent = depart
+  arriveModal.textContent = arrive
+
+  let [first, second] = split_liste(all_activity)
+
+  add_div(first, 'gauche')
+  add_div(second, 'droite')
+
+}
 
 async function getLoc(invoke, ville) {
   try {
@@ -140,6 +201,16 @@ function setupRoutes(villeDepart, villeArrive) {
 
 function openModal() {
   document.getElementById('myModal').style.display = "block";
+  const closeButton = document.getElementById("close");
+  const printButton = document.getElementById("print");
+  closeButton.addEventListener('click', () => {
+    closeModal();
+  })
+  printButton.addEventListener("click", () => {
+    imprimerPage();
+  })
+
+  contruction_modal()
 }
 
 function closeModal() {
@@ -155,4 +226,31 @@ function chargementCarrousel() {
   checkbox.addEventListener('click', () => {
     console.log(checkbox.value)
   })
+}
+
+function split_liste(all_activity) {
+  let totalLength = all_activity.length;
+  let sizeFirstList = Math.ceil(totalLength / 2);
+  let firstList = all_activity.slice(0, sizeFirstList);
+  let secondList = all_activity.slice(sizeFirstList);
+  return [firstList, secondList];
+}
+
+function add_div(liste, cote) {
+
+  divContainer = document.getElementById(cote);
+
+  liste.forEach(element => {
+    let divPrincipal = document.createElement('div')
+
+    let h2 = document.createElement('h2')
+    h2.textContent = element.name
+
+    let p = document.createElement('p')
+    p.textContent = element.address
+
+    divPrincipal.appendChild(h2)
+    divPrincipal.appendChild(p)
+    divContainer.appendChild(divPrincipal)
+  });
 }

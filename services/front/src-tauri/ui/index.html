@@ -12,7 +12,9 @@
 </head>
 <body>
 <div class="main-container">
-    <div id="data-list" class="left-container"></div>
+    <div id="data-list" class="left-container">
+      <p class="message-rien">pas d'element pour l'instant</p>
+      </div>
     <div class="container-header">
         <div class="header">
           <form action="/submit-road-trip" method="post">
@@ -46,75 +48,38 @@
                     </div>
                 </div>
               <div class="validate">
-                  <button type="submit">Enregistrer</button>
                   <button type="submit">Login</button>
               </div>
             </div>
           </form>
         </div>
         <div id="map" class="map" ></div>
-        <button class="roadtrip-overview" id="overview" onclick="openModal()">voir mes RoadTrip</button>
+        <button class="roadtrip-overview" id="overview">Recap RoadTrip</button>
     </div>
 
       <!-- contenue de la modale -->
 
       <div class="modal" id="myModal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-          <div class="city">
+            <span class="close" id="close">&times;</span>
+          <div class="city" id="depart-modal">
             <h2>Nancy</h2>
           </div>
           <div class="container">
-            <div class="first-container">
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-
+            <div class="first-container" id="gauche">
+                
               </div>
               <div class="centerLine"></div>
-              <div class="second-container">
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
-                <div>
-                  <h2>Nom: Jean Dupont</h2>
-                  <p>Adresse: 123, Avenue de la République, 75011 Paris, France</p>
-                </div>
+              <div class="second-container" id="droite">
+             </div>
               </div>
-              </div>
-            <div class="city">
+            <div class="city" id="arrivee-modal">
               <h2>Epinal</h2>
             </div>
+          <div class="validate-modal">
+            <button type="submit">Enregistrer</button>
+            <button id="print">imprimer</button>
+          </div>
         </div>
 </div>
 </body>

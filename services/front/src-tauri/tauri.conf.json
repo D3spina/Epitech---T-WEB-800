@@ -1,9 +1,9 @@
 {
   "build": {
-    "beforeBuildCommand": "cargo build",
-    "beforeDevCommand": "cargo run",
-    "devPath": "./ui",
-    "distDir": "./ui",
+    "beforeBuildCommand": "cargo build --manifest-path=/Users/thomas/Desktop/REPO EPITECH/t-web-800/services/front/src-tauri/Cargo.toml",
+    "beforeDevCommand": "cargo run --manifest-path=/Users/thomas/Desktop/REPO EPITECH/t-web-800/services/front/src-tauri/Cargo.toml",
+    "devPath": "../src-tauri/ui",
+    "distDir": "../src-tauri/ui",
     "withGlobalTauri": true
   },
   "package": {
@@ -12,7 +12,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true
     },
     "bundle": {
       "active": true,
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "thomasLeBg",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -48,7 +48,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self'"
     },
     "updater": {
       "active": false

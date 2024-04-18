@@ -9,6 +9,7 @@ class Google {
       this.directionsRenderer = new google.maps.DirectionsRenderer();
       this.directionsRenderer.setMap(this.map);
       this.citySet = new Set();
+      this.allMarker = []
       this.geocoder = new google.maps.Geocoder();
     } catch (error) {
       console.error('Failed to initialize Google Maps:', error);
@@ -41,7 +42,7 @@ class Google {
   }
 
   geocodeAddress(obj) {
-    console.log(obj)
+    // console.log(obj)
     return new Promise((resolve, reject) => {
       if (!obj.address) {
         reject("Address is empty");
@@ -56,12 +57,14 @@ class Google {
             title: obj.name,
           });
           var infoWindow = new google.maps.InfoWindow({
-            content: `<h3>${obj.name} ${parseFloat(obj.rating.toFixed(1))}</h3>`
+            content: `<h3 class="title_card">nom: ${obj.name}</h3><p class="rating">note sur 5: ${parseFloat(obj.rating.toFixed(1))}</p>`
           });
 
           marker.addListener('click', function() {
             infoWindow.open(this.map, marker);
           });
+
+          this.allMarker.push(marker)
           resolve(marker);
         } else {
           console.error('Failed to geocode address:', obj.address, 'Status:', status);
@@ -69,6 +72,12 @@ class Google {
         }
       });
     });
+  }
+
+  removeOtherMarkers() {
+    this.allMarker.forEach(marker => {
+      marker.setMap(null);
+    })
   }
 
 
