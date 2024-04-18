@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         console.log('L\'activité sélectionnée est : ' + this.value);
         switch (this.value) {
           case 'restaurant':
-            window.googleMapInstance.geocodeAddress()
+            // window.googleMapInstance.geocodeAddress()
             loadRestaurants(invoke, departValue, parseInt(rayonValue))
             loadRestaurants(invoke, arriveValue, parseInt(rayonValue))
         }
@@ -55,15 +55,16 @@ async function loadRestaurants(invoke, ville, ratio) {
         const restaurants = response;
         const dataList = document.getElementById('data-list');
         // dataList.innerHTML = '';
+        setTimeout(2000)
 
         let count = 0
         if (restaurants && Array.isArray(restaurants)) {
           restaurants.forEach(restaurant => {
             count += 1;
-            const marker = window.googleMapInstance.geocodeAddress(restaurant.address);
-            marker.addEventListener('click', function() {
-              scrollToRestaurant(this.restaurantId);
-            });
+
+
+            window.googleMapInstance.geocodeAddress(restaurant)
+
             const restaurantDiv = document.createElement('div');
             restaurantDiv.className = 'restaurant';
 
@@ -155,11 +156,3 @@ function chargementCarrousel() {
     console.log(checkbox.value)
   })
 }
-
-function scrollToRestaurant(restaurantId) {
-  var element = document.getElementById(restaurantId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-

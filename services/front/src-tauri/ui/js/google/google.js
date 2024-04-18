@@ -1,4 +1,7 @@
 class Google {
+
+
+
   constructor() {
     try {
       this.map = this.initMap();
@@ -32,25 +35,42 @@ class Google {
       position: location,
       map: this.map,
     });
-    marker.addListener('click', function() {
+    marker.addListener('click', () => {
       alert('Marqueur cliqué');
     });
   }
 
-  geocodeAddress(address) {
-    this.geocoder.geocode({ 'address': address }, (results, status) => {
-      if (status === 'OK') {
-        this.map.setCenter(results[0].geometry.location);
-        const marker = new google.maps.Marker({
-          map: this.map,
-          position: results[0].geometry.location
-        });
-        return marker;
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+  geocodeAddress(obj) {
+    console.log(obj)
+    return new Promise((resolve, reject) => {
+      if (!obj.address) {
+        reject("Address is empty");
+        return;
       }
+      this.geocoder.geocode({ 'address': obj.address }, (results, status) => {
+        if (status === 'OK') {
+          this.map.setCenter(results[0].geometry.location);
+          const marker = new google.maps.Marker({
+            map: this.map,
+            position: results[0].geometry.location,
+            title: obj.name,
+          });
+          var infoWindow = new google.maps.InfoWindow({
+            content: `<h3>${obj.name} ${parseFloat(obj.rating.toFixed(1))}</h3>`
+          });
+
+          marker.addListener('click', function() {
+            infoWindow.open(this.map, marker);
+          });
+          resolve(marker);
+        } else {
+          console.error('Failed to geocode address:', obj.address, 'Status:', status);
+          reject('Geocode was not successful: ' + status);
+        }
+      });
     });
   }
+
 
   travelRoute(start, end, travelMode = 'DRIVING') {
     // La variable 'start' et 'end' peuvent être des objets {lat: , lng: } ou des chaînes d'adresse
@@ -81,12 +101,11 @@ class Google {
   }
 
   getCityFromCoords(location) {
-    let geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ 'location': location }, function(results, status) {
+    // let geocoder = new google.maps.Geocoder();
+    this.geocoder.geocode({ 'location': location }, (results, status) => {
       if (status === 'OK' && results[0]) {
         let city = results.find(result => result.types.includes('locality'));
         if (city) {
-          // Ajoute le nom de la ville au Set s'il n'est pas déjà présent
           this.citySet.add(city.formatted_address);
         } else {
           console.log('City not found for location:', location);
@@ -95,7 +114,6 @@ class Google {
         console.error('Geocoder failed due to: ' + status);
       }
     });
-    return
   }
 
 
