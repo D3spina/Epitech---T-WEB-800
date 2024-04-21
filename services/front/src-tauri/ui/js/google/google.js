@@ -10,6 +10,7 @@ class Google {
       this.directionsRenderer.setMap(this.map);
       this.citySet = new Set();
       this.allMarker = []
+      this.cities = new Set();
       this.geocoder = new google.maps.Geocoder();
     } catch (error) {
       console.error('Failed to initialize Google Maps:', error);
@@ -81,7 +82,7 @@ class Google {
   }
 
 
-  travelRoute(start, end, travelMode = 'DRIVING') {
+  /*travelRoute(start, end, travelMode = 'DRIVING') {
     // La variable 'start' et 'end' peuvent être des objets {lat: , lng: } ou des chaînes d'adresse
     // this.citySet = new Set();
     this.directionsService.route({
@@ -116,6 +117,48 @@ class Google {
           this.citySet.add(city.formatted_address);
         } else {
           console.log('City not found for location:', location);
+        }
+      } else {
+        console.error('Geocoder failed due to: ' + status);
+      }
+    });
+  }*/
+
+  travelRoute(start, end, travelMode = 'DRIVING') {
+    this.directionsService.route({
+      origin: start,
+      destination: end,
+      travelMode: travelMode
+    }, (response, status) => {
+      if (status === 'OK') {
+        this.directionsRenderer.setDirections(response);
+        this.extractCitiesFromRoute(response);
+      } else {
+        console.error('Erreur dans la demande d\'itinéraire: ' + status);
+      }
+    });
+  }
+
+  extractCitiesFromRoute(directionResult) {
+    let legs = directionResult.routes[0].legs;
+    legs.forEach(leg => {
+      this.getCityFromCoords(leg.start_location);
+      leg.steps.forEach(step => {
+        this.getCityFromCoords(step.start_location);
+      });
+    });
+  }
+
+  getCityFromCoords(location) {
+    this.geocoder.geocode({ 'location': location }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        let addressComponents = results[0].address_components;
+        let city = addressComponents.find(component => component.types.includes('locality'));
+        if (city) {
+          if (!this.cities.has(city.long_name)) {
+            this.cities.add(city.long_name);
+            // console.log('City:', city.long_name);
+          }
         }
       } else {
         console.error('Geocoder failed due to: ' + status);

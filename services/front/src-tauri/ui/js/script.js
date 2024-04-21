@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
 
 
-  document.getElementById('search').addEventListener('click', async function() {
+  document.getElementById('search').addEventListener('click', function() {
     const departValue = document.getElementById('depart').value;
     const arriveValue = document.getElementById('arrivee').value;
     const rayonValue = document.getElementById('rayon').value;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
     let radios = document.querySelectorAll('input[type="radio"][name="activity"]');
     radios.forEach(function(radio) {
-      radio.addEventListener('change', function() {
+      radio.addEventListener('change', async function() {
         let div = document.getElementById('data-list');
         div.innerHTML = '';
         window.googleMapInstance.removeOtherMarkers()
@@ -47,13 +47,27 @@ document.addEventListener('DOMContentLoaded', async (event) => {
           //  commande = "get_transport"
         }
         // console.log(arriveValue)
+        //
+        //
+        //
         try {
+          // Premièrement, attendez que les restaurants du départ et de l'arrivée soient chargés.
           Promise.all([
             loadRestaurants(invoke, departValue, parseInt(rayonValue), commande),
             loadRestaurants(invoke, arriveValue, parseInt(rayonValue), commande)
-          ]).catch(error => console.error('Error loading restaurants:', error));
-        } catch (err) {
-          console.error(err)
+          ]);
+
+          // Maintenant, si vous avez des villes, chargez les restaurants pour chaque ville.
+          if (window.googleMapInstance && window.googleMapInstance.cities) {
+            let citiesArray = Array.from(window.googleMapInstance.cities);
+            Promise.all(citiesArray.map(city => {
+              //console.log(city); // Ou chargez des restaurants pour cette ville
+              loadRestaurants(invoke, city, parseInt(rayonValue), commande);
+            }));
+          }
+
+        } catch (error) {
+          console.error('Error loading restaurants:', error);
         }
       });
     });
@@ -84,12 +98,12 @@ async function loadRestaurants(invoke, ville, ratio, commande) {
         const restaurants = response;
         const dataList = document.getElementById('data-list');
         // dataList.innerHTML = '';
-        setTimeout(2000)
+        //setTimeout("patienté", 2000)
 
         let count = 0
         if (restaurants && Array.isArray(restaurants)) {
           restaurants.forEach(restaurant => {
-            if (restaurant.rating > 4) {
+            if (restaurant.rating > 4.5) {
               count += 1;
 
 
