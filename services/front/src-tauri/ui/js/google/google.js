@@ -89,8 +89,6 @@ class Google {
       destination: end,
       travelMode: travelMode
     }, (response, status) => {
-      //const legs = route.legs
-      //console.log(legs)
       if (status === 'OK') {
         this.directionsRenderer.setDirections(response);
         let route = response.routes[0];
