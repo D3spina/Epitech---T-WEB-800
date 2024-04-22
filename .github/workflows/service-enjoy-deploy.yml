@@ -1,0 +1,55 @@
+name: Deploy Service Enjoy
+
+on:
+  workflow_run:
+    workflows: ["Rust-test"]
+    branches: [service-enjoy]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  build-push-and-deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: service-enjoy
+
+    - name: Build the Docker image
+      run: docker compose build
+
+    - name: Tag image
+      run: docker tag enjoy:latest d3spina/t-web-800:enjoy-latest
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Push the Docker image
+      run: docker push d3spina/t-web-800:enjoy-latest
+
+    - name: Install kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save k8s-1-29-1-do-0-fra1-1711363150093
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl set image deployment/enjoy enjoy=${{ secrets.DOCKER_USERNAME }}/t-web-800:enjoy-latest --namespace enjoy
+
+    - name: Check deploy
+      run: kubectl rollout status deployment/enjoy -n enjoy
+

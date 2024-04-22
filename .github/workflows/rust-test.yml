@@ -19,5 +19,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Clean cache
+        run: cargo clean
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test
