@@ -430,3 +430,22 @@ h1 {
   background-color: #FBFBFB;
   transition-delay: background-color 1s;
 }
+
+.travel_infos {
+  position: absolute;
+  bottom: 10px;
+  left: 32%;
+  background-color: #DCDCDC;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.travel_infos>p {
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+  font-size: 14px;
+  background-color: transparent;
+  padding-left: 5px;
+  padding-right: 5px;
+}

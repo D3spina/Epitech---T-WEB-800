@@ -83,20 +83,38 @@ class Google {
 
 
   // bicycling, driving, walking, transit, motorcycle
+
   travelRoute(start, end, travelMode) {
-    this.directionsService.route({
-      origin: start,
-      destination: end,
-      travelMode: travelMode
-    }, (response, status) => {
-      if (status === 'OK') {
-        this.directionsRenderer.setDirections(response);
-        this.extractCitiesFromRoute(response);
-      } else {
-        console.error('Erreur dans la demande d\'itinéraire: ' + status);
-      }
+    return new Promise((resolve, reject) => {
+      this.directionsService.route({
+        origin: start,
+        destination: end,
+        travelMode: travelMode
+      }, (response, status) => {
+        if (status === 'OK') {
+          this.directionsRenderer.setDirections(response);
+          this.extractCitiesFromRoute(response);
+
+          let totalDistance = 0;
+          let totalTime = 0;
+          const route = response.routes[0];
+          route.legs.forEach(leg => {
+            totalDistance += leg.distance.value; // distance en mètres
+            totalTime += leg.duration.value; // temps en secondes
+          });
+
+          resolve({
+            totalTime: totalTime / 60, // Converti en minutes
+            totalDistance: totalDistance / 1000 // Converti en kilomètres
+          });
+        } else {
+          console.error('Erreur dans la demande d\'itinéraire: ' + status);
+          reject(status);
+        }
+      });
     });
   }
+
 
   extractCitiesFromRoute(directionResult) {
     let legs = directionResult.routes[0].legs;

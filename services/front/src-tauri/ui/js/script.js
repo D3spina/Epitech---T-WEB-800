@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', async (event) => {
   const { invoke } = window.__TAURI__.tauri;
   window.all_activity = []
 
+  window.travelMethod = "DRIVING"
+
+
   window.initMap = function() {
     window.googleMapInstance = new Google(); // Crée et stocke l'instance globalement
   };
@@ -43,13 +46,8 @@ document.addEventListener('DOMContentLoaded', async (event) => {
           //  commande = "get_sport"
           //case 'bar':
           //  commande = "get_bar"
-          //case 'transport':
-          //  commande = "get_transport"
         }
         // console.log(arriveValue)
-        //
-        //
-        //
         try {
           // Premièrement, attendez que les restaurants du départ et de l'arrivée soient chargés.
           Promise.all([
@@ -79,7 +77,27 @@ document.addEventListener('DOMContentLoaded', async (event) => {
       alert("Veuillez vérifier vos villes");
       return;
     } else {
-      setupRoutes(departValue, arriveValue);
+      setupRoutes(departValue, arriveValue, 'DRIVING').then((response) => {
+        travelInfos(response.totalDistance, response.totalTime)
+        // console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
+      document.getElementById('mode_transport').addEventListener('click', async function(event) {
+        if (event.target.tagName === 'IMG') {
+          const modeDiv = event.target.parentNode;
+          const mode = modeDiv.id;
+          if (mode) {
+            console.log('Mode de transport sélectionné:', mode.toUpperCase());
+            setupRoutes(departValue, arriveValue, mode.toUpperCase()).then((response) => {
+              travelInfos(response.totalDistance, response.totalTime)
+            }).catch(err => {
+              console.log(err)
+            })
+          }
+        }
+      });
+
     }
   });
 
@@ -149,8 +167,6 @@ async function loadRestaurants(invoke, ville, ratio, commande) {
                 alert('ativité ajouter avec succès')
               })
 
-
-
               if (restaurants.picture != "") {
                 imageContainer.appendChild(image)
               }
@@ -206,11 +222,15 @@ async function getLoc(invoke, ville) {
   }
 }
 
-function setupRoutes(villeDepart, villeArrive) {
-  if (window.googleMapInstance) {
-    window.googleMapInstance.travelRoute(villeDepart, villeArrive, 'DRIVING');
-  } else {
-    setTimeout(setupRoutes, 100);
+async function setupRoutes(villeDepart, villeArrive, methode) {
+  try {
+    if (window.googleMapInstance) {
+      return await window.googleMapInstance.travelRoute(villeDepart, villeArrive, methode);
+    } else {
+      setTimeout(() => setupRoutes(villeDepart, villeArrive, methode), 100);
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'obtention des informations d\'itinéraire:', error);
   }
 }
 
@@ -269,4 +289,14 @@ function add_div(liste, cote) {
     divPrincipal.appendChild(p)
     divContainer.appendChild(divPrincipal)
   });
+}
+
+
+function travelInfos(distance, temps) {
+  let hours = Math.floor(temps / 60);
+  let minutes = temps % 60
+
+  document.getElementById('distance').innerHTML = `${parseInt(distance)} Km`
+  document.getElementById('temps').innerHTML = `${hours}H ${parseInt(minutes)} min`
+
 }
