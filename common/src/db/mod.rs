@@ -1,4 +1,4 @@
-use mysql::*;
+/*use mysql::*;
 //use dotenv_codegen::dotenv;
 use mysql::prelude::Queryable;
 
@@ -42,21 +42,4 @@ impl Database {
 
         Ok(())
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use std::fmt::Error;
-    use serde_json::error::Category::Data;
-    use crate::db::Database;
-
-    use tokio;
-
-    use super::*;
-
-    #[tokio::test]
-    async fn test_empty() {
-        assert!(Database::query("").is_err());
-    }
-
-}
+}*/
