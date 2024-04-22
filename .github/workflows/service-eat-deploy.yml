@@ -25,10 +25,11 @@ jobs:
     - name: Push the Docker image
       run: docker push d3spina/t-web-800:eat-latest
 
-    - name: Set up Kubeconfig
-      uses: azure/setup-kubectl@v2
-      with:
-       version: 'latest'
+    - name: Install kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
 
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
