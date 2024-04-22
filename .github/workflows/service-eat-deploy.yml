@@ -3,12 +3,14 @@ name: Deploy Service Eat
 on:
   workflow_run:
     workflows: ["Rust-eat"]
+    branches: [service-eat]
     types:
       - completed
   workflow_dispatch:
 
 jobs:
   build-push-and-deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
