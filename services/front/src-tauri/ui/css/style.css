@@ -226,13 +226,15 @@ html {
 
 .roadtrip-overview {
   font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
-  font-size: 17px;
+  font-size: 16px;
   border: none;
+  padding: 0;
   font-weight: 500;
-  background: #307EF1;
+  /*background: #307EF1;*/
+  background-color: #DCDCDC;
   border-radius: 999px;
   /*box-shadow: #5E5DF0 0 10px 20px -10px;*/
-  color: #F9FDFF;
+  color: black;
   position: sticky;
   bottom: 30px;
   left: 20px;
@@ -385,4 +387,46 @@ h1 {
 
 .title_card {
   margin-bottom: 0;
+}
+
+.DRIVING {}
+
+.TRANSIT {}
+
+.WALKING {}
+
+.BICYCLING {}
+
+.MOTOCYCLE {}
+
+.mode_transport {
+  position: absolute;
+  bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.mode_transport>div>img {
+  width: 30px;
+  height: 30px;
+}
+
+.mode_transport>div {
+  border-radius: 5px;
+  padding: 3px;
+  transition: background-color 0.3s, color 0.3s;
+  /*transition-delay: 1s;*/
+}
+
+.mode_transport {
+  background-color: #DCDCDC;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.mode_transport>div:hover {
+  color: white;
+  background-color: #FBFBFB;
+  transition-delay: background-color 1s;
 }

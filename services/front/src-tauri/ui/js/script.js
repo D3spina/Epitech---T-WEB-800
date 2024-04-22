@@ -53,15 +53,17 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         try {
           // Premièrement, attendez que les restaurants du départ et de l'arrivée soient chargés.
           Promise.all([
-            loadRestaurants(invoke, departValue, parseInt(rayonValue), commande),
-            loadRestaurants(invoke, arriveValue, parseInt(rayonValue), commande)
+            //loadRestaurants(invoke, departValue, parseInt(rayonValue), commande),
+            // loadRestaurants(invoke, arriveValue, parseInt(rayonValue), commande)
           ]);
 
           // Maintenant, si vous avez des villes, chargez les restaurants pour chaque ville.
           if (window.googleMapInstance && window.googleMapInstance.cities) {
+            window.googleMapInstance.cities.delete(departValue);
+            // window.googleMapInstance.delete(arriveValue)
             let citiesArray = Array.from(window.googleMapInstance.cities);
             Promise.all(citiesArray.map(city => {
-              //console.log(city); // Ou chargez des restaurants pour cette ville
+              console.log(city); // Ou chargez des restaurants pour cette ville
               loadRestaurants(invoke, city, parseInt(rayonValue), commande);
             }));
           }
@@ -103,7 +105,7 @@ async function loadRestaurants(invoke, ville, ratio, commande) {
         let count = 0
         if (restaurants && Array.isArray(restaurants)) {
           restaurants.forEach(restaurant => {
-            if (restaurant.rating > 4.5) {
+            if (restaurant.rating > 4) {
               count += 1;
 
 
@@ -206,7 +208,7 @@ async function getLoc(invoke, ville) {
 
 function setupRoutes(villeDepart, villeArrive) {
   if (window.googleMapInstance) {
-    window.googleMapInstance.travelRoute(villeDepart, villeArrive);
+    window.googleMapInstance.travelRoute(villeDepart, villeArrive, 'DRIVING');
   } else {
     setTimeout(setupRoutes, 100);
   }

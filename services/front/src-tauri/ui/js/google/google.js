@@ -82,49 +82,8 @@ class Google {
   }
 
 
-  /*travelRoute(start, end, travelMode = 'DRIVING') {
-    // La variable 'start' et 'end' peuvent être des objets {lat: , lng: } ou des chaînes d'adresse
-    // this.citySet = new Set();
-    this.directionsService.route({
-      origin: start,
-      destination: end,
-      travelMode: travelMode
-    }, (response, status) => {
-      if (status === 'OK') {
-        this.directionsRenderer.setDirections(response);
-        let route = response.routes[0];
-        let legs = route.legs;
-        legs.forEach(leg => {
-          // Utiliser chaque début de segment pour vérifier la ville
-          this.getCityFromCoords(leg.start_location);
-          leg.steps.forEach(step => {
-            this.getCityFromCoords(step.start_location);
-          });
-        });
-
-      } else {
-        console.error('Erreur dans la demande d\'itinéraire: ' + status);
-      }
-    });
-  }
-
-  getCityFromCoords(location) {
-    // let geocoder = new google.maps.Geocoder();
-    this.geocoder.geocode({ 'location': location }, (results, status) => {
-      if (status === 'OK' && results[0]) {
-        let city = results.find(result => result.types.includes('locality'));
-        if (city) {
-          this.citySet.add(city.formatted_address);
-        } else {
-          console.log('City not found for location:', location);
-        }
-      } else {
-        console.error('Geocoder failed due to: ' + status);
-      }
-    });
-  }*/
-
-  travelRoute(start, end, travelMode = 'DRIVING') {
+  // bicycling, driving, walking, transit, motorcycle
+  travelRoute(start, end, travelMode) {
     this.directionsService.route({
       origin: start,
       destination: end,
