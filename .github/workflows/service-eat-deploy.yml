@@ -41,7 +41,7 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl set image deployment/eat myapp=${{ secrets.DOCKER_USERNAME }}/t-web-800:eat-latest --record
+        kubectl set image deployment/eat myapp=${{ secrets.DOCKER_USERNAME }}/t-web-800:eat-latest --namespace eat
 
     - name: Check deploy
       run: kubectl rollout status deployment/eat -n eat
