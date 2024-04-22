@@ -8,32 +8,6 @@ extern crate common;
 use common::google::nearly_place_model::{Emplacement, exploit_json};
 use common::google::Google;
 
-#[derive(Serialize, Deserialize, Debug)]
-struct CityCoord {
-    lat: f64,
-    long: f64,
-}
-
-impl CityCoord {
-    fn new(lat: f64, long: f64) -> Self {
-        Self {
-            lat,
-            long
-        }
-    }
-}
-
-#[get("/coord/<localisation>")]
-async fn coord(localisation: String) -> Json<CityCoord> {
-    let mut google = Google::new();
-    google
-        .geocoding(localisation)
-        .await
-        .expect("geocoding n'a pas été éxécuté correctement");
-    let result = CityCoord::new(google.lat, google.lng);
-    Json(result)
-}
-
 #[get("/service/drink/<localisation>/<radius>")]
 async fn index(localisation: String, radius: i32) -> Json<HashMap<String, Vec<Emplacement>>> {
     let types = ["bar", "cafe", "night_club"];
@@ -50,7 +24,7 @@ async fn index(localisation: String, radius: i32) -> Json<HashMap<String, Vec<Em
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index, coord])
+    rocket::build().mount("/", routes![index])
 }
 
 pub(crate) async fn get_google(localisation: String, radius: i32, types: String) -> Value {
