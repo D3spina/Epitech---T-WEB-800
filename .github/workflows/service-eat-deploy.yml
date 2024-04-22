@@ -26,7 +26,9 @@ jobs:
       run: docker push d3spina/t-web-800:eat-latest
 
     - name: Set up Kubeconfig
-      run: echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
 
     - name: Deploy to Kubernetes
       run: |
