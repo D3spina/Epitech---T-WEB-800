@@ -2,7 +2,7 @@ name: Deploy Service Eat
 
 on:
   workflow_run:
-    workflows: ["Rust-eat"]
+    workflows: ["Rust-test"]
     branches: [service-eat]
     types:
       - completed
