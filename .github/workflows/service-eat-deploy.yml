@@ -1,9 +1,9 @@
-name: Deploy Service Sleep
+name: Deploy Service Eat
 
 on:
   workflow_run:
     workflows: ["Rust-test"]
-    branches: [service-sleep]
+    branches: [service-eat]
     types:
       - completed
   workflow_dispatch:
@@ -15,13 +15,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: service-sleep
+        ref: service-eat
 
     - name: Build the Docker image
       run: docker compose build
 
     - name: Tag image
-      run: docker tag sleep:latest d3spina/t-web-800:sleep-latest
+      run: docker tag eat:latest d3spina/t-web-800:eat-latest
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v1
@@ -30,7 +30,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Push the Docker image
-      run: docker push d3spina/t-web-800:sleep-latest
+      run: docker push d3spina/t-web-800:eat-latest
 
     - name: Install kubectl
       run: |
@@ -48,8 +48,8 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl set image deployment/sleep sleep=${{ secrets.DOCKER_USERNAME }}/t-web-800:sleep-latest --namespace sleep
+        kubectl set image deployment/eat eat=${{ secrets.DOCKER_USERNAME }}/t-web-800:eat-latest --namespace eat
 
     - name: Check deploy
-      run: kubectl rollout status deployment/sleep -n sleep
+      run: kubectl rollout status deployment/eat -n eat
 
