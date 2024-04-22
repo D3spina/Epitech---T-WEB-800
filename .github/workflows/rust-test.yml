@@ -3,7 +3,6 @@ name: Rust-test
 on:
   push:
     branches: 
-     - main
      - service-eat
      - service-auth
      - service-drink
@@ -20,7 +19,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build --verbose
+      - name: Clean cache
+        run: cargo clean
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test
