@@ -5,6 +5,7 @@ on:
     workflows: ["Rust-eat"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   build-push-and-deploy:
