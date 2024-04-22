@@ -36,8 +36,13 @@ jobs:
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save T-WEB-800
+
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml
-        kubectl rollout status deployment/eat -n eat
+        kubectl set image deployment/eat myapp=${{ secrets.DOCKER_USERNAME }}/t-web-800:eat-latest --record
+
+    - name: Check deploy
+      run: kubectl rollout status deployment/eat -n eat
+
