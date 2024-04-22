@@ -25,9 +25,6 @@ jobs:
     - name: Push the Docker image
       run: docker push d3spina/t-web-800:eat-latest
 
-    - name: Install doctl
-      run: sudo snap connect doctl:kube-config
-
     - name: Set up Kubeconfig
       run: |
         mkdir -p $HOME/.kube
@@ -35,6 +32,6 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml
+        kubectl apply -f deployment.yaml --validate=false
+        kubectl apply -f service.yaml --validate=false
         kubectl rollout status deployment/eat -n eat
