@@ -1,4 +1,5 @@
-[![Rust](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink)]
+[![Rust-test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
+[![Deploy Service Sleep](https://github.com/thybux/t-web-800/actions/workflows/service-sleep-deploy.yml/badge.svg)](https://github.com/thybux/t-web-800/actions/workflows/service-sleep-deploy.yml)
 
 
 # T-WEB-800
