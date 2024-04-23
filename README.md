@@ -33,7 +33,12 @@ La méthode de travail utilisé est la méthode "Test Driven Development".
 ## Changelog
 
 - 2024-03-04 : création du projet
+- 2024-04-23 : first release
 
-## Package
+## Release
 
-Pas de package disponible pour le moment.
+Une première release est disponible dans la section correspondance. Vous trouverez un exécutable windows et un éxécutable pour MacOS.
+
+## RGPD
+
+Toutes les données utilisateurs sont sauvegardés dans l'union européene
