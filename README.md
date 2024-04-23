@@ -1,4 +1,4 @@
-[![Rust](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
+[![Rust](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink)]
 
 
 # T-WEB-800
