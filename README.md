@@ -1,5 +1,11 @@
 [![Rust-test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
+[![Rust-test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
+[![Rust-test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-enjoy)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
+[![Rust-test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-sleep)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
 [![Deploy Service Sleep](https://github.com/thybux/t-web-800/actions/workflows/service-sleep-deploy.yml/badge.svg)](https://github.com/thybux/t-web-800/actions/workflows/service-sleep-deploy.yml)
+[![Deploy Service Enjoy](https://github.com/thybux/t-web-800/actions/workflows/service-enjoy-deploy.yml/badge.svg)](https://github.com/thybux/t-web-800/actions/workflows/service-enjoy-deploy.yml)
+[![Deploy Service Eat](https://github.com/thybux/t-web-800/actions/workflows/service-eat-deploy.yml/badge.svg)](https://github.com/thybux/t-web-800/actions/workflows/service-eat-deploy.yml)
+[![Deploy Service Drink](https://github.com/thybux/t-web-800/actions/workflows/service-drink-deploy.yml/badge.svg)](https://github.com/thybux/t-web-800/actions/workflows/service-drink-deploy.yml)
 
 
 # T-WEB-800
