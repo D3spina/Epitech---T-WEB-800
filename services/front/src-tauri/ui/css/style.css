@@ -54,7 +54,13 @@ html {
 }
 
 .addImage {
-  width: 30px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border: none;
+  font-size: 40px;
+  margin: 0;
+  cursor: pointer;
 }
 
 .restaurant {
@@ -150,7 +156,7 @@ html {
   flex-direction: row;
   justify-content: center;
   gap: 5%;
-  margin-left: 75%;
+  margin-left: 70%;
 }
 
 .arrive {
@@ -259,7 +265,7 @@ p {
 
 .container {
   margin-top: 8px;
-  margin-left: 18%;
+  margin-left: 15%;
   max-height: 700px;
   width: 600px;
   overflow: scroll;

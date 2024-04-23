@@ -12,9 +12,13 @@ document.addEventListener('DOMContentLoaded', async (event) => {
   let overview = document.getElementById('overview')
   overview.addEventListener('click', () => {
     openModal()
-
   })
 
+  document.addEventListener('keydown', function(event) {
+    if (event.key === "Enter") {
+      simulateClick('search')
+    }
+  });
 
 
   document.getElementById('search').addEventListener('click', function() {
@@ -49,7 +53,6 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         }
         // console.log(arriveValue)
         try {
-          // Premièrement, attendez que les restaurants du départ et de l'arrivée soient chargés.
           Promise.all([
             //loadRestaurants(invoke, departValue, parseInt(rayonValue), commande),
             // loadRestaurants(invoke, arriveValue, parseInt(rayonValue), commande)
@@ -158,13 +161,25 @@ async function loadRestaurants(invoke, ville, ratio, commande) {
               address.textContent = restaurant.address;
               address.className = 'address'
 
-              const addImage = document.createElement('img');
-              addImage.src = './assets/add.png'
+              const addImage = document.createElement('p');
+              // addImage.src = './assets/add.png'
               addImage.className = "addImage";
+              addImage.textContent = '+'
 
               addImage.addEventListener('click', () => {
-                window.all_activity.push(restaurant)
-                alert('ativité ajouter avec succès')
+                /*if (addImage.textContent == "-") {
+                  let index = window.all_activity.indexOf(restaurant);
+                  if (index !== -1) {
+                    window.all_activity.splice(index, 1);
+                  }
+                  addImage.textContent = "+"
+                  alert("activité enlever du roadtrip")
+                } else {
+                  window.all_activity.push(restaurant)
+                  alert('ativité ajouter avec succès')
+                  addImage.textContent = '-'
+                }*/
+                toggleActivity(addImage, restaurant, window.all_activity)
               })
 
               if (restaurants.picture != "") {
@@ -191,6 +206,22 @@ async function loadRestaurants(invoke, ville, ratio, commande) {
 
   } catch (error) {
     console.error('Failed to load restaurants', error);
+  }
+}
+
+function toggleActivity(element, restaurant, activityArray) {
+  console.log(activityArray)
+  let index = activityArray.indexOf(restaurant);
+  if (element.textContent === "-") {
+    if (index !== -1) {
+      activityArray.splice(index, 1);
+    }
+    element.textContent = "+";
+    alert("Activité enlevée du roadtrip");
+  } else {
+    activityArray.push(restaurant);
+    alert('Activité ajoutée avec succès');
+    element.textContent = '-';
   }
 }
 
@@ -299,4 +330,12 @@ function travelInfos(distance, temps) {
   document.getElementById('distance').innerHTML = `${parseInt(distance)} Km`
   document.getElementById('temps').innerHTML = `${hours}H ${parseInt(minutes)} min`
 
+}
+
+
+function simulateClick(divId) {
+  var elem = document.getElementById(divId);
+  if (elem) {
+    elem.click();
+  }
 }
