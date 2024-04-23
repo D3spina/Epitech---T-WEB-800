@@ -1,4 +1,4 @@
-[![service-eat Test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-eat)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml) [![service-drink Test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
+[![service-eat Test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-eat&label=service-eat%20Test)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml) [![service-drink Test](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml/badge.svg?branch=service-drink&label=service-drink%20Test)](https://github.com/thybux/t-web-800/actions/workflows/rust-test.yml)
 
 
 # T-WEB-800
