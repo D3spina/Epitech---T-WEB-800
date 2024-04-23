@@ -1,5 +1,7 @@
-#![windows_subsystem = "windows"]
+// #![windows_subsystem = "windows"]
+use reqwest::Error;
 use serde::{Deserialize, Serialize};
+use std::result::Result;
 
 #[cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #[derive(Serialize, Deserialize, Debug)]
@@ -28,6 +30,21 @@ struct Lodging {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+struct Bar {
+    name: String,
+    rating: f32,
+    address: String,
+    picture: String,
+    lat: f64,
+    long: f64,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct AllBar {
+    bar: Vec<Bar>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 struct Data {
     campground: Vec<String>, // Assuming campground has a similar structure or change as needed
     lodging: Vec<Lodging>,
@@ -40,6 +57,13 @@ async fn fetch_restaurants(ville: &str, radius: i16) -> Result<Vec<Restaurant>, 
     Ok(restaurants)
 }
 
+async fn fetch_all_bar(ville: &str, radius: i16) -> Result<Vec<Bar>, reqwest::Error> {
+    let url = format!("http://188.166.194.100/service/drink/{}/{}", ville, radius);
+    let response = reqwest::get(url).await?;
+    let bars = response.json::<AllBar>().await?;
+    Ok(bars.bar)
+}
+
 async fn fetch_localisation(ville: &str) -> Result<Localisation, reqwest::Error> {
     let url = format!("http://164.90.242.159/coord/{}", ville);
     let response = reqwest::get(&url).await?;
@@ -50,6 +74,13 @@ async fn fetch_sleep(ville: &str, radius: i16) -> Result<Vec<Lodging>, reqwest::
     let url = format!("http://157.230.76.245/service/sleep/{}/{}", ville, radius);
     let response = reqwest::get(url).await?.json::<Data>().await?;
     Ok(response.lodging)
+}
+
+#[tauri::command]
+async fn get_bar(ville: &str, radius: i16) -> Result<Vec<Bar>, String> {
+    fetch_all_bar(&ville, radius)
+        .await
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -75,6 +106,7 @@ fn main() {
             get_restaurants,
             get_localisation,
             get_sleep,
+            get_bar,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
           //case 'sport':
           //  commande = "get_sport"
-          //case 'bar':
-          //  commande = "get_bar"
+          case 'bar':
+            commande = "get_bar"
         }
         // console.log(arriveValue)
         try {
