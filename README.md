@@ -25,11 +25,11 @@ L'équipe se compose de 4 membres :
 
 ## Technologies utilisées
 
-Le langage est définie sur Rust. Le choix est documenté sur [Pourquoi rust ?](./pourquoirust?.md)
+Le langage est définie sur Rust. Le choix est documenté sur [Pourquoi rust](./pourquoirust.md)
 
 ## Documentation
 
-- [Besoin utilisateur](./besoinutilisateur.pdf)
+- [Besoin utilisateur](./besoin_utilisateur.pdf)
 - [Normes de code](./normesdecode.md)
 ## Organisation
 
