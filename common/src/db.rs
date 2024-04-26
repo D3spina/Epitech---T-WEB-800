@@ -1,4 +1,4 @@
-use bcrypt::{DEFAULT_COST, hash, verify};
+use bcrypt::{hash, verify, DEFAULT_COST};
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::MySqlPool;
 
@@ -37,7 +37,13 @@ impl Db {
         })
     }
 
-    pub async fn create_account(&self, user_email: &str, user_password: &str, user_name: &str, user_last_name: &str) -> Result<bool, sqlx::Error> {
+    pub async fn create_account(
+        &self,
+        user_email: &str,
+        user_password: &str,
+        user_name: &str,
+        user_last_name: &str,
+    ) -> Result<bool, sqlx::Error> {
         let hashed_password = match hash(user_password, DEFAULT_COST) {
             Ok(h) => h,
             Err(_) => panic!("Failed to hash password"),
@@ -68,14 +74,15 @@ impl Db {
         match user_record {
             Ok(record) => {
                 if let Some(stored_password) = record.password {
-                    let password_matched = verify(user_password, &stored_password).map_err(|_| sqlx::Error::RowNotFound)?;
+                    let password_matched = verify(user_password, &stored_password)
+                        .map_err(|_| sqlx::Error::RowNotFound)?;
 
                     Ok(password_matched)
                 } else {
                     Ok(false) // Le mot de passe est null
                 }
-            },
-            Err(_) => Ok(false) // Aucun enregistrement trouvé pour l'e-mail donné
+            }
+            Err(_) => Ok(false), // Aucun enregistrement trouvé pour l'e-mail donné
         }
     }
 }
@@ -88,7 +95,11 @@ mod tests {
     async fn test_connexion_bd() {
         let db = Db::new().await.unwrap();
         let connection_result = db.pool.acquire().await;
-        assert!(connection_result.is_ok(), "Failed to establish database connection: {:?}", connection_result.err());
+        assert!(
+            connection_result.is_ok(),
+            "Failed to establish database connection: {:?}",
+            connection_result.err()
+        );
     }
 
     #[tokio::test]
@@ -97,13 +108,20 @@ mod tests {
         let user_password = "password";
         let user_name = "testu";
         let user_last_name = "last_testu";
-        let mut lets_db = Db::new().await.unwrap();
-        lets_db.create_account(user_email, user_password, user_name, user_last_name).await.unwrap();
+        let lets_db = Db::new().await.unwrap();
+        lets_db
+            .create_account(user_email, user_password, user_name, user_last_name)
+            .await
+            .unwrap();
         // Supprimer l'utilisateur après le test
         let delete_result = sqlx::query!("DELETE FROM user WHERE email = ?", user_email)
             .execute(&lets_db.pool)
             .await;
-        assert!(delete_result.is_ok(), "Failed to delete user: {:?}", delete_result.err());
+        assert!(
+            delete_result.is_ok(),
+            "Failed to delete user: {:?}",
+            delete_result.err()
+        );
     }
 
     #[tokio::test]
@@ -119,8 +137,9 @@ mod tests {
         let false_user_email = "test@fezf.com";
         let false_user_password = "dzqd";
         let false_lets_db = Db::new().await.unwrap();
-        let false_login_result = false_lets_db.login(false_user_email, false_user_password).await;
+        let false_login_result = false_lets_db
+            .login(false_user_email, false_user_password)
+            .await;
         assert!(!false_login_result.unwrap());
     }
 }
-
