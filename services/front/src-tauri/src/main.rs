@@ -1,5 +1,5 @@
 // #![windows_subsystem = "windows"]
-use reqwest::Error;
+//use reqwest::Error;
 use serde::{Deserialize, Serialize};
 use std::result::Result;
 
@@ -39,6 +39,14 @@ struct Bar {
     long: f64,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct Enjoy {
+    name: String,
+    rating: f32,
+    address: String,
+    picture: String,
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 struct AllBar {
     bar: Vec<Bar>,
@@ -55,6 +63,14 @@ async fn fetch_restaurants(ville: &str, radius: i16) -> Result<Vec<Restaurant>, 
     let response = reqwest::get(url).await?;
     let restaurants = response.json::<Vec<Restaurant>>().await?;
     Ok(restaurants)
+}
+
+#[tokio::main]
+async fn fetch_enjoy(ville: &str, radius: i16) -> Result<Vec<Enjoy>, reqwest::Error> {
+    let url = format!("http://64.225.95.53/service/enjoy/{}/{}", ville, radius);
+    let response = reqwest::get(url).await?;
+    let enjoys = response.json::<Vec<Enjoy>>().await?;
+    Ok(enjoys)
 }
 
 async fn fetch_all_bar(ville: &str, radius: i16) -> Result<Vec<Bar>, reqwest::Error> {
@@ -84,6 +100,11 @@ async fn get_bar(ville: &str, radius: i16) -> Result<Vec<Bar>, String> {
 }
 
 #[tauri::command]
+async fn get_enjoy(ville: &str, radius: i16) -> Result<Vec<Enjoy>, String> {
+    fetch_enjoy(&ville, radius).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
 async fn get_restaurants(ville: &str, radius: i16) -> Result<Vec<Restaurant>, String> {
     fetch_restaurants(&ville, radius)
         .await
@@ -107,6 +128,7 @@ fn main() {
             get_localisation,
             get_sleep,
             get_bar,
+            get_enjoy,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

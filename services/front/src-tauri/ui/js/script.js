@@ -61,9 +61,8 @@ document.addEventListener('DOMContentLoaded', async (event) => {
           case 'accommodation':
             commande = "get_sleep"
             break;
-
-          //case 'sport':
-          //  commande = "get_sport"
+          case 'sport':
+            commande = "get_enjoy"
           case 'bar':
             commande = "get_bar"
         }
