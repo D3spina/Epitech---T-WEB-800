@@ -1,97 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="./js/script.js"></script>
-    <script src="./js/google/google.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tauri-apps/api/dist/tauri.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E&callback=initMap"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="./js/script.js"></script>
+  <script src="./js/google/google.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tauri-apps/api/dist/tauri.js"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuFLAY6DH36pKwjlJpGNetrGwx4Lt491E&callback=initMap"></script>
 </head>
+
 <body>
-<div class="main-container">
+  <div class="main-container">
     <div id="data-list" class="left-container">
       <p class="message-rien">pas d'element pour l'instant</p>
-      </div>
+    </div>
     <div class="container-header">
-        <div class="header">
-          <div>
-              <div class="arrive">
-                  <input type="text" id="depart" name="depart" placeholder="départ">
-                  <input type="text" id="arrivee" name="arrivee" placeholder="arrivée">
-                  <input type="number" id="rayon" name="rayon" placeholder="Rayon d'activité m" min="1">
-                  <div class="search" id="search" >Search</div>
+      <div class="header">
+        <div>
+          <div class="arrive">
+            <input type="text" id="depart" name="depart" placeholder="départ">
+            <input type="text" id="arrivee" name="arrivee" placeholder="arrivée">
+            <input type="number" id="rayon" name="rayon" placeholder="Rayon d'activité m" min="1">
+            <div class="search" id="search">Search</div>
+          </div>
+          <div class="container-filtre">
+            <div class="carousel">
+              <div class="carousel-item">
+                <input type="radio" id="bar" name="activity" value="bar">
+                <label for="bar">Bar</label>
               </div>
-                <div class="container-filtre">
-                  <div class="carousel">
-                    <div class="carousel-item">
-                        <input type="radio" id="bar" name="activity" value="bar">
-                        <label for="bar">Bar</label>
-                    </div>
-                    <div class="carousel-item">
-                        <input type="radio" id="restaurant" name="activity" value="restaurant">
-                        <label for="restaurant">Restaurant</label>
-                    </div>
-                    <div class="carousel-item">
-                        <input type="radio" id="sport" name="activity" value="sport">
-                        <label for="sport">Loisirs</label>
-                    </div>
-                    <div class="carousel-item">
-                        <input type="radio" id="accommodation" name="activity" value="accommodation">
-                        <label for="accommodation">Hébergements</label>
-                    </div>
-                    <!--<div class="carousel-item">
-                        <input type="radio" id="transport" name="activity" value="transport">
-                        <label for="transport">Transports</label>
-                    </div>!-->
-                </div>
-              <div class="validate">
-                  <button type="submit">Login</button>
+              <div class="carousel-item">
+                <input type="radio" id="restaurant" name="activity" value="restaurant">
+                <label for="restaurant">Restaurant</label>
               </div>
+              <div class="carousel-item">
+                <input type="radio" id="sport" name="activity" value="sport">
+                <label for="sport">Loisirs</label>
+              </div>
+              <div class="carousel-item">
+                <input type="radio" id="accommodation" name="activity" value="accommodation">
+                <label for="accommodation">Hébergements</label>
+              </div>
+            </div>
+            <div class="validate">
+              <button id="button_login">Login</button>
             </div>
           </div>
         </div>
-        <div id="map" class="map" ></div>
-          <div class="mode_transport" id="mode_transport">
-            <button class="roadtrip-overview" id="overview">Recap RoadTrip</button>
-            <div id="walking" class="WALKING"><img src="./assets/Marche à pied.png" alt=""></div>
-            <div id="bicycling" class="BICYCLING"><img src="./assets/Velo.png" alt=""></div>
-            <!-- <div id="motorcycle" class="MOTORCYCLE"><img src="./assets/Moto.png" alt="moto"></div>!-->
-            <div id="driving" class="DRIVING"><img src="./assets/Voiture.png" alt="voiture"></div>
-            <div id="transit" class="TRANSIT"><img src="./assets/Train.png" alt=""></div>
-        </div>
-        <div class="travel_infos">
-          <p id="distance"></p>
-          <p id="temps"></p>
-        </div>
-        </div>
+      </div>
+      <div id="map" class="map"></div>
+      <div class="mode_transport" id="mode_transport">
+        <button class="roadtrip-overview" id="overview">Recap RoadTrip</button>
+        <div id="walking" class="WALKING"><img src="./assets/marche.png" alt=""></div>
+        <div id="bicycling" class="BICYCLING"><img src="./assets/Velo.png" alt=""></div>
+        <div id="driving" class="DRIVING"><img src="./assets/Voiture.png" alt="voiture"></div>
+        <div id="transit" class="TRANSIT"><img src="./assets/Train.png" alt=""></div>
+      </div>
+      <div class="travel_infos">
+        <p id="distance"></p>
+        <p id="temps"></p>
+      </div>
+    </div>
 
-      <!-- contenue de la modale -->
+    <!-- contenue de la modale -->
 
-      <div class="modal" id="myModal">
-        <div class="modal-content">
-            <span class="close" id="close">&times;</span>
-          <div class="city" id="depart-modal">
-            <h2>Nancy</h2>
+    <div class="modal" id="myModal">
+      <div class="modal-content">
+        <span class="close" id="close">&times;</span>
+        <div class="city" id="depart-modal">
+          <h2>Nancy</h2>
+        </div>
+        <div class="container">
+          <div class="first-container" id="gauche">
+
           </div>
-          <div class="container">
-            <div class="first-container" id="gauche">
-                
-              </div>
-              <div class="centerLine"></div>
-              <div class="second-container" id="droite">
-             </div>
-              </div>
-            <div class="city" id="arrivee-modal">
-              <h2>Epinal</h2>
-            </div>
-          <div class="validate-modal">
-            <button type="submit">Enregistrer</button>
-            <button id="print">imprimer</button>
+          <div class="centerLine"></div>
+          <div class="second-container" id="droite">
           </div>
         </div>
-</div>
+        <div class="city" id="arrivee-modal">
+          <h2>Epinal</h2>
+        </div>
+        <div class="validate-modal">
+          <button type="submit">Enregistrer</button>
+          <button id="print">imprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <!--contenue de la modal de connexion!-->
+    <div class="modal_login" id="modal_login">
+      <div class="modal-content_login" id="modal-content_login">
+        <span class="close" id="close_login">&times;</span>
+        <div class="content_login" id="depart-modal">
+          <input type="text" id="username" name="username" placeholder="username" required><br>
+          <input type="text" id="nom" name="nom" placeholder="name" required><br>
+          <input type="text" id="email" name="email" placeholder="email" required><br>
+          <input type="password" id="password" name="password" placeholder="password" required><br>
+        </div>
+        <div class="button_login">
+          <button id="login">Login</button>
+          <button id="register">Register</button>
+        </div>
+      </div>
+
+    </div>
 </body>
+
 </html>

@@ -20,6 +20,22 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     }
   });
 
+  const login_button = document.getElementById("button_login")
+  login_button.addEventListener('click', () => {
+    console.log("salut")
+    openModal_login()
+    const login = document.getElementById("login")
+    const register = document.getElementById("register")
+
+    login.addEventListener('click', () => {
+      console.log("login");
+    });
+    register.addEventListener("click", () => {
+      console.log("register")
+    })
+  })
+
+
 
   document.getElementById('search').addEventListener('click', function() {
     const departValue = document.getElementById('depart').value;
@@ -51,13 +67,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
           case 'bar':
             commande = "get_bar"
         }
-        // console.log(arriveValue)
         try {
-          Promise.all([
-            //loadRestaurants(invoke, departValue, parseInt(rayonValue), commande),
-            // loadRestaurants(invoke, arriveValue, parseInt(rayonValue), commande)
-          ]);
-
           // Maintenant, si vous avez des villes, chargez les restaurants pour chaque ville.
           if (window.googleMapInstance && window.googleMapInstance.cities) {
             window.googleMapInstance.cities.delete(departValue);
@@ -280,10 +290,21 @@ function openModal() {
   contruction_modal()
 }
 
+function openModal_login() {
+  document.getElementById('modal_login').style.display = "block";
+  const closeButton = document.getElementById("close_login");
+  closeButton.addEventListener('click', () => {
+    closeModal_login();
+  })
+}
+
+
+function closeModal_login() {
+  document.getElementById('modal_login').style.display = "none";
+}
 function closeModal() {
   document.getElementById('myModal').style.display = "none";
 }
-
 function imprimerPage() {
   window.print();
 }
