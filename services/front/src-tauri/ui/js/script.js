@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', async (event) => {
   window.all_activity = []
 
   window.travelMethod = "DRIVING"
+  window.account = {}
+
+  connected("", false)
 
 
   window.initMap = function() {
@@ -66,6 +69,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         invoke('login_api', { email: obj.email, password: obj.password }).then(() => {
           closeModal_login()
           alert("vous êtes connecté")
+          connected(obj.email, true)
         }).catch(() => {
           console.log("une erreur est survenue lors de la connexion")
         })
@@ -73,12 +77,18 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         invoke('create_account', obj).then(() => {
           closeModal_login()
           alert("vous êtes connecté")
+          connected(obj.email, true)
         }).catch(() => {
           alert("erreur de création de compte vérifier les infos")
         })
       } else {
         alert("vérifier vos informations")
       }
+
+      document.getElementById("button_disconnect").addEventListener('click', () => {
+        alert("vous êtes deconnecté")
+        connected("", false)
+      });
     })
   })
 
@@ -266,7 +276,6 @@ async function loadRestaurants(invoke, ville, ratio, commande) {
 }
 
 function toggleActivity(element, restaurant, activityArray) {
-  console.log(activityArray)
   let index = activityArray.indexOf(restaurant);
   if (element.textContent === "-") {
     if (index !== -1) {
@@ -279,9 +288,14 @@ function toggleActivity(element, restaurant, activityArray) {
     alert('Activité ajoutée avec succès');
     element.textContent = '-';
   }
+  console.log(activityArray); // Debugging output
 }
 
 function contruction_modal() {
+
+  document.getElementById('gauche').innerText = ''
+  document.getElementById("droite").innerText = ''
+
   all_activity = window.all_activity
   const depart = document.getElementById('depart').value
   const arrive = document.getElementById('arrivee').value
@@ -339,15 +353,6 @@ function openModal_login() {
   document.getElementById('modal_login').style.display = "block";
   const closeButton = document.getElementById("close_login");
   closeButton.addEventListener('click', () => {
-    document.getElementById("login").addEventListener("click", () => {
-      console.log("connexion")
-
-    })
-    document.getElementById("register").addEventListener("click", () => {
-      console.log("register")
-    })
-
-
     closeModal_login();
   })
 }
@@ -385,13 +390,30 @@ function add_div(liste, cote) {
   liste.forEach(element => {
     let divPrincipal = document.createElement('div')
 
+    let divHead = document.createElement("div")
+    divHead.className = 'divHead'
+
+    let suppButton = document.createElement("span")
+    suppButton.className = 'suppButton'
+    suppButton.innerHTML = '&times;'
+
     let h2 = document.createElement('h2')
     h2.textContent = element.name
 
     let p = document.createElement('p')
     p.textContent = element.address
 
-    divPrincipal.appendChild(h2)
+    suppButton.addEventListener('click', () => {
+      let index = window.all_activity.indexOf(element);
+      if (index !== -1) {
+        window.all_activity.splice(index, 1);
+      }
+      contruction_modal()
+    })
+
+    divHead.appendChild(h2)
+    divHead.appendChild(suppButton)
+    divPrincipal.appendChild(divHead)
     divPrincipal.appendChild(p)
     divContainer.appendChild(divPrincipal)
   });
@@ -415,12 +437,18 @@ function simulateClick(divId) {
   }
 }
 
-function connexionRegister(type) {
-  var contentLogin = document.getElementById('depart-modal');
-  var username = contentLogin.querySelector('#username').value;
-  var nom = contentLogin.querySelector('#nom').value;
-  var email = contentLogin.querySelector('#email').value;
-  var password = contentLogin.querySelector('#password').value;
-
-  inv
+function connected(email, isConnected) {
+  if (isConnected === true) {
+    document.getElementById("button_login").style.display = 'none'
+    document.getElementById("imgProfile").style.display = ''
+    document.getElementById("emailProfile").style.display = ''
+    document.getElementById("emailProfile").innerText = email
+    document.getElementById("button_disconnect").style.display = ''
+  } else {
+    document.getElementById("emailProfile").innerText = ''
+    document.getElementById("button_login").style.display = ''
+    document.getElementById("imgProfile").style.display = 'none'
+    document.getElementById("emailProfile").style.display = 'none'
+    document.getElementById("button_disconnect").style.display = 'none'
+  }
 }

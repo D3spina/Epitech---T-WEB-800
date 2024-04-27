@@ -120,25 +120,6 @@ async fn get_localisation(ville: &str) -> Result<Localisation, String> {
     fetch_localisation(ville).await.map_err(|e| e.to_string())
 }
 
-/*#[tauri::command]
-async fn register(
-    name: &str,
-    last_name: &str,
-    email: &str,
-    password: &str,
-) -> Result<bool, String> {
-    match create_account(name, last_name, email, password).await {
-        Ok(()) => {
-            println!("Account creation successful");
-            Ok(true)
-        }
-        Err(e) => {
-            eprintln!("Error posting data: {}", e);
-            Err(format!("Error posting data: {}", e))
-        }
-    }
-}*/
-
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![

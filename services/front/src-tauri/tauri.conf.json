@@ -56,10 +56,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 800,
+        "height": 900,
         "resizable": false,
         "title": "index",
-        "width": 1000
+        "width": 1100
       }
     ]
   }
