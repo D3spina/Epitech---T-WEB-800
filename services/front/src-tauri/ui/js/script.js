@@ -22,16 +22,63 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
   const login_button = document.getElementById("button_login")
   login_button.addEventListener('click', () => {
-    console.log("salut")
     openModal_login()
     const login = document.getElementById("login")
+    const submit = document.getElementById("sub")
     const register = document.getElementById("register")
 
-    login.addEventListener('click', () => {
-      console.log("login");
+    divContainerLogin = document.getElementById("contentLogin")
+
+    login.addEventListener('click', function() {
+      document.getElementById('nom').style.display = 'none';
+      document.getElementById('email').style.display = '';
+      document.getElementById('username').style.display = 'none';
+      document.getElementById('password').style.display = '';
     });
-    register.addEventListener("click", () => {
-      console.log("register")
+
+    register.addEventListener('click', function() {
+      document.getElementById('nom').style.display = '';
+      document.getElementById('email').style.display = '';
+      document.getElementById('username').style.display = '';
+      document.getElementById('password').style.display = '';
+    });
+
+
+    submit.addEventListener("click", () => {
+      const username = document.getElementById('username').value
+      const email = document.getElementById('email').value
+      const name = document.getElementById('nom').value
+      const password = document.getElementById("password").value
+
+      if (!username && !email && !password && !name) {
+        alert("vérifier vos informations, toutes les information sont requises")
+        return;
+      }
+
+      const obj = {
+        name: name,
+        lastName: username,
+        email: email,
+        password: password
+      }
+
+      if (!username && !name) {
+        invoke('login_api', { email: obj.email, password: obj.password }).then(() => {
+          closeModal_login()
+          alert("vous êtes connecté")
+        }).catch(() => {
+          console.log("une erreur est survenue lors de la connexion")
+        })
+      } else if (username && password && name && email) {
+        invoke('create_account', obj).then(() => {
+          closeModal_login()
+          alert("vous êtes connecté")
+        }).catch(() => {
+          alert("erreur de création de compte vérifier les infos")
+        })
+      } else {
+        alert("vérifier vos informations")
+      }
     })
   })
 
@@ -285,7 +332,6 @@ function openModal() {
   printButton.addEventListener("click", () => {
     imprimerPage();
   })
-
   contruction_modal()
 }
 
@@ -293,6 +339,15 @@ function openModal_login() {
   document.getElementById('modal_login').style.display = "block";
   const closeButton = document.getElementById("close_login");
   closeButton.addEventListener('click', () => {
+    document.getElementById("login").addEventListener("click", () => {
+      console.log("connexion")
+
+    })
+    document.getElementById("register").addEventListener("click", () => {
+      console.log("register")
+    })
+
+
     closeModal_login();
   })
 }
@@ -358,4 +413,14 @@ function simulateClick(divId) {
   if (elem) {
     elem.click();
   }
+}
+
+function connexionRegister(type) {
+  var contentLogin = document.getElementById('depart-modal');
+  var username = contentLogin.querySelector('#username').value;
+  var nom = contentLogin.querySelector('#nom').value;
+  var email = contentLogin.querySelector('#email').value;
+  var password = contentLogin.querySelector('#password').value;
+
+  inv
 }
