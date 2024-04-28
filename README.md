@@ -31,6 +31,7 @@ Le langage est définie sur Rust. Le choix est documenté sur [Pourquoi rust](./
 
 - [Besoin utilisateur](./besoin_utilisateur.pdf)
 - [Normes de code](./normesdecode.md)
+- [Retours utilisateurs](./retours_utilisateurs.pdf)
 ## Organisation
 
 Le groupe s'est organisé autour de Trello pour gérer les tâches. Discord est utilisé pour communiquer en dehors de l'école à travers un serveur privé.
