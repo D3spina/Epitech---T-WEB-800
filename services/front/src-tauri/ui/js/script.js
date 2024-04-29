@@ -408,6 +408,7 @@ function add_div(liste, cote) {
       if (index !== -1) {
         window.all_activity.splice(index, 1);
       }
+      alert("Activité enlevée du roadtrip");
       contruction_modal()
     })
 
