@@ -8,6 +8,27 @@ document.addEventListener('DOMContentLoaded', async (event) => {
 
   connected("", false)
 
+  invoke('fetch_activities', { email: "tt@tt", description: "ok ok"}).then((resp) => {
+    console.log(resp)
+  })
+
+  document.getElementById('enregistrer').addEventListener('click', async () => {
+    let tableau = window.all_activity;
+    const description = document.getElementById("description").value
+    for (const element of tableau) {
+      await addActivityTravel(
+          invoke,
+          window.email,
+          element.name,
+          element.address,
+          "",
+          description,
+          '',
+          document.getElementById("depart").textContent,
+          document.getElementById('arrivee').textContent,
+      )
+    }
+  })
 
   window.initMap = function() {
     window.googleMapInstance = new Google(); // Crée et stocke l'instance globalement
@@ -69,6 +90,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         invoke('login_api', { email: obj.email, password: obj.password }).then(() => {
           closeModal_login()
           alert("vous êtes connecté")
+          window.email = obj.email
           connected(obj.email, true)
         }).catch(() => {
           console.log("une erreur est survenue lors de la connexion")
@@ -77,6 +99,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
         invoke('create_account', obj).then(() => {
           closeModal_login()
           alert("vous êtes connecté")
+          window.email = obj.email
           connected(obj.email, true)
         }).catch(() => {
           alert("erreur de création de compte vérifier les infos")
@@ -451,5 +474,24 @@ function connected(email, isConnected) {
     document.getElementById("imgProfile").style.display = 'none'
     document.getElementById("emailProfile").style.display = 'none'
     document.getElementById("button_disconnect").style.display = 'none'
+  }
+}
+
+
+async function addActivityTravel(invoke, email, activityName, address, city, description, transport, depart, arrivee) {
+  try {
+    const response = invoke('add_activity_travel', {
+      email: email,
+      activityName: activityName,
+      address: address,
+      city: city,
+      description: description,
+      transport: transport,
+      depart: depart,
+      arrivee: arrivee
+    });
+    console.log(response); // Faites quelque chose avec la réponse
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout de l\'activité et du voyage :', error);
   }
 }

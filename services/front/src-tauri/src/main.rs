@@ -11,6 +11,15 @@ struct Restaurant {
     picture: String,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct ActivityDetails {
+    name: String,
+    address: String,
+    city: String,
+    depart: String,
+    arrive: String,
+}
+
 #[cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #[derive(Serialize, Deserialize, Debug)]
 struct Localisation {
@@ -116,6 +125,76 @@ async fn get_sleep(ville: &str, radius: i16) -> Result<Vec<Lodging>, String> {
 }
 
 #[tauri::command]
+async fn fetch_activities(
+    email: String,
+    description: String,
+) -> Result<Vec<ActivityDetails>, String> {
+    let client = reqwest::Client::new();
+    let url = format!(
+        "http://164.90.242.159/fetch_activities?email={}&description={}",
+        email, description
+    );
+    let request = client
+        .get(&url)
+        .header("Content-Type", "application/json")
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let status = request.status();
+    let body = request.text().await.map_err(|e| e.to_string())?;
+    if status.is_success() {
+        let activities: Vec<ActivityDetails> =
+            serde_json::from_str(&body).map_err(|e| e.to_string())?;
+        Ok(activities)
+    } else {
+        Err(format!("Failed to fetch activities: {}", status))
+    }
+}
+
+#[tauri::command]
+async fn add_activity_travel(
+    email: String,
+    activity_name: String,
+    address: String,
+    city: String,
+    description: String,
+    transport: String,
+    depart: String,
+    arrivee: String,
+) -> Result<String, String> {
+    let client = reqwest::Client::new();
+    let url = "http://164.90.242.159/add_activity_travel";
+
+    let data = json!({
+        "email": email,
+        "activity_name": activity_name,
+        "address": address,
+        "city": city,
+        "description": description,
+        "transport": transport,
+        "depart": depart,
+        "arrive": arrivee
+    });
+
+    let request = client
+        .post(url)
+        .json(&data)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let status = request.status();
+    let body = request.text().await.map_err(|e| e.to_string())?;
+
+    if status.is_success() {
+        Ok(body)
+    } else {
+        Err(format!("Failed to add activity and travel: {}", status))
+    }
+}
+
+#[tauri::command]
 async fn get_localisation(ville: &str) -> Result<Localisation, String> {
     fetch_localisation(ville).await.map_err(|e| e.to_string())
 }
@@ -130,6 +209,8 @@ fn main() {
             get_enjoy,
             create_account,
             login_api,
+            fetch_activities,
+            add_activity_travel,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
