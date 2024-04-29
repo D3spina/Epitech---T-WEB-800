@@ -1,8 +1,10 @@
-use common::db::Db;
 use rocket::http::Status;
 use rocket::serde::json::Json;
 use rocket::serde::Deserialize;
+use rocket::State;
 use serde_json::Value;
+use common::db::{ActivityDetails, Db};
+
 
 #[macro_use]
 extern crate rocket;
@@ -15,6 +17,24 @@ use serde::Serialize;
 struct CityCoord {
     lat: f64,
     long: f64,
+}
+
+#[derive(Deserialize)]
+struct TravelRequest {
+    email: String,
+    activity_name: String,
+    address: String,
+    city: String,
+    description: String,
+    transport: String,
+    depart: String,
+    arrive: String,
+}
+
+#[derive(Debug, Serialize)]
+struct ApiResponse {
+    status: String,
+    message: String,
 }
 
 #[derive(Deserialize)]
@@ -62,6 +82,44 @@ async fn auth(
     }
 }
 
+#[get("/fetch_activities?<email>&<description>")]
+async fn get_activities(email: String, description: String) -> Result<Json<Vec<ActivityDetails>>, Status> {
+    let db = Db::new().await.expect("coucou");
+    match db.fetch_activity_details(&email, &description).await {
+        Ok(activity_details) => Ok(Json(activity_details)),
+        Err(e) => {
+            eprintln!("Error fetching activity details: {}", e);
+            Err(Status::InternalServerError)
+        },
+    }
+}
+
+#[post("/add_activity_travel", data = "<travel_request>")]
+async fn add_activity_travel(
+    db: &rocket::State<Db>,
+    travel_request: Json<TravelRequest>,
+) -> Json<ApiResponse> {
+    match db.add_activity_and_travel(
+        &travel_request.email,
+        travel_request.activity_name.clone(),
+        travel_request.address.clone(),
+        travel_request.city.clone(),
+        &travel_request.description,
+        &travel_request.transport,
+        &travel_request.depart,
+        &travel_request.arrive,
+    ).await {
+        Ok(()) => Json(ApiResponse {
+            status: "success".into(),
+            message: "Activity and travel added successfully".into(),
+        }),
+        Err(e) => Json(ApiResponse {
+            status: "error".into(),
+            message: format!("Failed to add activity and travel: {}", e),
+        }),
+    }
+}
+
 #[post(
     "/create_account",
     format = "application/json",
@@ -100,7 +158,7 @@ async fn main() {
     let db = Db::new().await.expect("Failed to create database pool");
     let rocket_instance = rocket::build()
         .manage(db)
-        .mount("/", routes![index, coord, auth, create_account_route]);
+        .mount("/", routes![index, coord, auth, create_account_route, add_activity_travel, get_activities]);
 
     match rocket_instance.launch().await {
         Ok(_) => println!("Server launched successfully."),
