@@ -7,7 +7,7 @@
 [![Deploy Service Eat](https://github.com/thybux/t-web-800/actions/workflows/service-eat-deploy.yml/badge.svg)](https://github.com/thybux/t-web-800/actions/workflows/service-eat-deploy.yml)
 [![Deploy Service Drink](https://github.com/thybux/t-web-800/actions/workflows/service-drink-deploy.yml/badge.svg)](https://github.com/thybux/t-web-800/actions/workflows/service-drink-deploy.yml)
 
-**Ce projet n'est plus actif et ne peux donc plus être utilisé**
+**NB: Il s'agissait d'un projet d'école. La base de donnée a été coupée. Ce projet n'est plus actif et ne peux donc plus être utilisé**
 
 # T-WEB-800
 
